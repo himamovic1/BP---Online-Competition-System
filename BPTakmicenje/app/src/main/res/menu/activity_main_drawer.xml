@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_takmicenja"
+            android:icon="@android:drawable/ic_dialog_dialer"
+            android:title="Takmicenja" />
+        <item
+            android:id="@+id/nav_takmicari"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="Takmicari" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@android:drawable/arrow_down_float"
+            android:title="Rezultati" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Analize" />
+    </group>
+
+</menu>
