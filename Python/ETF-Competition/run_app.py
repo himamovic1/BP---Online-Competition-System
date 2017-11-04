@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return Auth.get()
+    auth = Auth()
+    auth.get()
 
 
 if __name__ == '__main__':
