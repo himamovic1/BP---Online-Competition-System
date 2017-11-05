@@ -1,5 +1,3 @@
 class Auth:
-
-    @staticmethod
-    def get():
-        return "Hello"
+    def get(self):
+        return "Auth:get", 200
