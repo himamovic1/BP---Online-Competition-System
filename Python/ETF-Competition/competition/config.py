@@ -1,6 +1,8 @@
 class Config:
     """ Contains all necessary configuration parameters """
     SERVER_HOST = '127.0.0.1'
+    SQLALCHEMY_DATABASE_URI = "mysql://root@localhost:3306/etf_competition"
+    SQLALCHEMY_ETFDB_URI = ""
 
     @staticmethod
     def init_app(app):
