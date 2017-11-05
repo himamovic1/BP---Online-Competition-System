@@ -1,32 +1,17 @@
-from flask import Flask
+import socket
 
-from competition.controllers.auth.views import Auth
-from competition.controllers.public.views import Public
-
-app = Flask(__name__, template_folder='competition/templates')
+from competition import create_app
 
 
-@app.route('/')
-def index():
-    public = Public()
-    return public.index()
-
-
-@app.route('/home')
-def home():
-    public = Public()
-    return public.home()
+def print_local_ip():
+    """ Get servers local IP address so it can be accessed inside this network. """
+    spacer = '-' * 50
+    local_ip = socket.gethostbyname(socket.gethostname())
+    print('{}\nLocal IP address is: {}\n{}'.format(spacer, local_ip, spacer))
 
 
 if __name__ == '__main__':
+    print_local_ip()
 
-    # Print current local IP address of the server
-    import socket
-    print('{}\nLocal server IP address: {}\n{}'.format(
-        '-' * 50,
-        socket.gethostbyname(socket.gethostname()),
-        '-' * 50)
-    )
-
-    # Run the server
-    app.run(host='0.0.0.0')
+    app = create_app('development')
+    app.run(host=app.config['SERVER_HOST'])

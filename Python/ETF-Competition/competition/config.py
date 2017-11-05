@@ -1,11 +1,15 @@
 class Config:
     """ Contains all necessary configuration parameters """
-    pass
+    SERVER_HOST = '127.0.0.1'
+
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelopmentConfig(Config):
     """ Contains configuration parameters used during the development """
-    pass
+    SERVER_HOST = '0.0.0.0'
 
 
 class TestConfig(Config):
