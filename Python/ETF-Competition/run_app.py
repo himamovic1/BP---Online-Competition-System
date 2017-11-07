@@ -14,4 +14,4 @@ if __name__ == '__main__':
     print_local_ip()
 
     app = create_app('development')
-    app.run(host=app.config['SERVER_HOST'])
+    app.run(host=app.config['SERVER_HOST'], debug=app.config['DEBUG'])
