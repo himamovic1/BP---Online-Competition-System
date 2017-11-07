@@ -7,6 +7,7 @@ Repository for a semestral project
 - Python 3.6
 - JetBrains Pycharm 2017 (Community will do just fine)
 - PostgreSQL (9.6 preferably)
+- psqlODBC (09.06 preferably)
 
 #### Optional 
 - PgAdmin 4
