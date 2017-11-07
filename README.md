@@ -6,6 +6,8 @@ Repository for a semestral project
 ## Requirements
 - Python 3.6
 - JetBrains Pycharm 2017 (Community will do just fine)
+- PostgreSQL (9.6 preferably)
+- PgAdmin 4
 
 ## How To
 ### Server side:
