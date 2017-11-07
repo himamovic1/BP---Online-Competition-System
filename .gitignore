@@ -1,4 +1,7 @@
-*.py[co]
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 *.DS_*
 
 # Packages
@@ -28,3 +31,6 @@ pip-log.txt
 venv
 *.pyc
 build
+
+# IDEA stuff
+.idea/
