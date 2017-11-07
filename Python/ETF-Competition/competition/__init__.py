@@ -29,10 +29,12 @@ def create_app(config_name="default"):
 
     return app
 
+
 def register_extensions(app):
     """ Attach and initialize extensions here """
     with app.app_context():
         db.init_app(app)
+
 
 def register_blueprints(app):
     """ Attach routes and blueprints here """

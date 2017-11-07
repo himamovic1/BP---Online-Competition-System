@@ -11,6 +11,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     """ Contains configuration parameters used during the development """
+    DEBUG = True
     SERVER_HOST = '0.0.0.0'
 
 
