@@ -1,10 +1,12 @@
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
 from .config import config as app_config
 
 # Create extension instances
 db = SQLAlchemy()
+bootstrap = Bootstrap()
 
 # Import models - this has to be after "db = SQLAlchemy()" line
 from competition.models.Competition import Competition
@@ -34,6 +36,8 @@ def register_extensions(app):
     """ Attach and initialize extensions here """
     with app.app_context():
         db.init_app(app)
+
+    bootstrap.init_app(app)
 
 
 def register_blueprints(app):
