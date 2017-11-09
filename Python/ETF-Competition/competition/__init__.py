@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 from .config import config as app_config
@@ -7,6 +8,11 @@ from .config import config as app_config
 # Create extension instances
 db = SQLAlchemy()
 bootstrap = Bootstrap()
+login_manager = LoginManager()
+
+# Setup extensions
+login_manager.session_protection = 'basic'
+login_manager.login_view = 'auth.login'
 
 # Import models - this has to be after "db = SQLAlchemy()" line
 from competition.models.Competition import Competition
@@ -38,12 +44,17 @@ def register_extensions(app):
         db.init_app(app)
 
     bootstrap.init_app(app)
+    login_manager.init_app(app)
 
 
 def register_blueprints(app):
     """ Attach routes and blueprints here """
-    from competition.blueprints.api import api as api_scheme_v1
-    from competition.blueprints.html import html_blueprint as browser_scheme
+    from competition.controllers.public import public_bp
+    from competition.controllers.auth import auth_bp
+    from competition.controllers.competition import competition_bp
+    from competition.blueprints.api import api as api_blueprint
 
-    app.register_blueprint(api_scheme_v1, url_prefix='/api')
-    app.register_blueprint(browser_scheme)
+    app.register_blueprint(public_bp)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(competition_bp, url_prefix='/competition')
+    app.register_blueprint(api_blueprint, url_prefix='/api')

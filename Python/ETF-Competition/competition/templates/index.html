@@ -1,11 +1,15 @@
-{% extends 'bootstrap/base.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Početna | ETF Competition{% endblock %}
+{% block title %}Home | ETF Competition{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="page-header">
-            <h1>Hello from official site of ETF Competition</h1>
+        <div class="jumbotron">
+            <h1>ETF Competition</h1>
+            <p>Welcome to the official site of ETF Competition. To continue please sign in.</p>
+            <p>
+                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}" role="button">Sign in</a>
+            </p>
         </div>
     </div>
 {% endblock %}

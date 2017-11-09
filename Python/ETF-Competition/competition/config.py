@@ -1,6 +1,9 @@
 class Config:
     """ Contains all necessary configuration parameters """
+    SECRET_KEY = 'some hard to guess string'  # TODO: Change me!!!
     SERVER_HOST = '127.0.0.1'
+
+    # Database related settings
     SQLALCHEMY_DATABASE_URI = "postgresql://dbadmin:dbadmin@localhost:5432/etf_competition"
     SQLALCHEMY_ETFDB_URI = "oracle://username:password@server/db"
 
