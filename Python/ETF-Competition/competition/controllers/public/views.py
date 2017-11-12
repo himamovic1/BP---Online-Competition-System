@@ -7,7 +7,7 @@ from competition.models.Field import Field
 
 @public_bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('public/index.html')
 
 
 @public_bp.route('/add/<string:name>')

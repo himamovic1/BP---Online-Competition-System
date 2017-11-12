@@ -15,7 +15,7 @@ def login():
 
         if user is not None and user.verify_password(login_form.password.data):
             login_user(user)
-            return redirect(request.args.get('next') or url_for('competition.competition_list'))
+            return redirect(request.args.get('next') or url_for('competition.list_all'))
 
         flash('Invalid credentials')
     return render_template('auth/login.html', form=login_form)
@@ -26,4 +26,4 @@ def login():
 def logout():
     logout_user()
     flash('You have logged out.')
-    return render_template('index.html')
+    return render_template('public/index.html')

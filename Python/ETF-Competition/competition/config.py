@@ -11,11 +11,15 @@ class Config:
     def init_app(app):
         pass
 
+    ASSETS_DEBUG = True
+
 
 class DevelopmentConfig(Config):
     """ Contains configuration parameters used during the development """
     DEBUG = True
     SERVER_HOST = '0.0.0.0'
+
+    ASSETS_DEBUG = True
 
 
 class TestConfig(Config):
@@ -25,6 +29,7 @@ class TestConfig(Config):
 
 class ProductionConfig(Config):
     """ Contains configuration parameters used after the app went live """
+    ASSETS_DEBUG = False
     pass
 
 

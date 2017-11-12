@@ -1,0 +1,63 @@
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="{{ url_for('public.index') }}" class="site_title">
+                <i class="fa fa-university"></i> <span>ETF Competition v3</span>
+            </a>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <!-- menu profile quick info -->
+        <div class="profile clearfix">
+            <div class="profile_pic">
+                <img src="{{ url_for('static', filename='images/img.jpg') }}"
+                     alt="Profile" class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>Dobrodošli,</span>
+                <h3>John Doe</h3>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
+
+        <br/>
+
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <ul class="nav side-menu">
+                    <li>
+                        <a href="{{ url_for('public.index') }}">
+                            <i class="fa fa-home"></i> Početna
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="fa fa-edit"></i>Takmičenja<span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ url_for('competition.calendar') }}">Pregled takmičenja</a></li>
+                            <li><a href="{{ url_for('competition.list_all') }}">Pregled rezultata</a></li>
+                            <li><a href="{{ url_for('competition.add_new') }}">Dodaj novo takmičenje</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-desktop"></i>Takmičari<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="general_elements.html">Pregled takmičara</a></li>
+                            <li><a href="general_elements.html">Dodaj novog takmičara</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a><i class="fa fa-table"></i>Statistika<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="tables.html">Analiza rezultata takmičenja</a></li>
+                            <li><a href="tables.html">Analiza rezultata takmičara</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /sidebar menu -->
+    </div>
+</div>

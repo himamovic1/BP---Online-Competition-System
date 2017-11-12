@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
+from competition.assets import assets
 from .config import config as app_config
 
 # Create extension instances
@@ -11,7 +12,7 @@ bootstrap = Bootstrap()
 login_manager = LoginManager()
 
 # Setup extensions
-login_manager.session_protection = 'basic'
+login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 # Import models - this has to be after "db = SQLAlchemy()" line
@@ -44,6 +45,7 @@ def register_extensions(app):
         db.init_app(app)
 
     bootstrap.init_app(app)
+    assets.init_app(app)
     login_manager.init_app(app)
 
 

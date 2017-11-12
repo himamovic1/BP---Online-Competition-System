@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block title %}Login | ETF Competition{% endblock %}
+{% block title %}Prijava | ETF Competition{% endblock %}
 
-{% block page_content %}
+{% block content %}
     <div class="page-header">
-        <h1>Thank You for using ETF Competition</h1>
+        <h1 class="text-uppercase">Thank You for choosing ETF Competition</h1>
         <h3>We help make your future brighter</h3>
     </div>
 
     <!-- Login Form -->
-    <div class="row">
+    <div class="d-row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
