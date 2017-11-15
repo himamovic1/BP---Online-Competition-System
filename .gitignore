@@ -8,7 +8,6 @@ __pycache__/
 *.egg
 *.egg-info
 dist
-build
 eggs
 parts
 bin
@@ -30,7 +29,6 @@ pip-log.txt
 #Mr Developer
 venv
 *.pyc
-build
 
 # IDEA stuff
 .idea/
