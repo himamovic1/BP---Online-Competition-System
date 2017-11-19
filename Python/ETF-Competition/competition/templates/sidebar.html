@@ -2,33 +2,33 @@
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
             <a href="{{ url_for('public.index') }}" class="site_title">
-                <i class="fa fa-university"></i> <span>ETF Competition v3</span>
+                <span>ETF Competition</span>
             </a>
         </div>
 
         <div class="clearfix"></div>
 
         <!-- menu profile quick info -->
-        <div class="profile clearfix">
+        {% if current_user.is_authenticated %}
+        <div class="profile clearfix mb-5">
             <div class="profile_pic">
                 <img src="{{ url_for('static', filename='images/img.jpg') }}"
                      alt="Profile" class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Dobrodošli,</span>
-                <h3>{{ current_user.name }}</h3>
+                <h2>{{ current_user.name }}</h2>
             </div>
         </div>
+        {% endif %}
         <!-- /menu profile quick info -->
-
-        <br/>
 
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <ul class="nav side-menu">
+                <ul class="nav side-menu m-0">
                     <li>
-                        <a href="{{ url_for('public.index') }}">
+                        <a href="{{ url_for('public.index') }}" class="m-0">
                             <i class="fa fa-home"></i> Početna
                         </a>
                     </li>

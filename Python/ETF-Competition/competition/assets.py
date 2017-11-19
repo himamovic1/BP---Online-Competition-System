@@ -8,6 +8,7 @@ css_bundle = Bundle(
     'plugins/fullcalendar/fullcalendar.css',
     'plugins/build/css/custom.min.css',
     'css/utils.css',
+    'css/style.css',
     filters='cssmin',
     output='build/bundle.css'
 )

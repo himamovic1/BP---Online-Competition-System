@@ -25,7 +25,7 @@ from competition.models.Result import Result
 from competition.models.User import User
 from competition.models.Student import Student
 from competition.models.Administrator import Administrator
-
+# from competition.models.etf import User
 
 def create_app(config_name="default"):
     """ App Factory Function """

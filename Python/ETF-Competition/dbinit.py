@@ -25,4 +25,4 @@ if __name__ == '__main__':
         seed(db)
 
         db.session.commit()
-        print("All done, enjoy mate :)")
+print("All done, enjoy mate :)")

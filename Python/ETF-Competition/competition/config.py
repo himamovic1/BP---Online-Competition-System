@@ -5,7 +5,9 @@ class Config:
 
     # Database related settings
     SQLALCHEMY_DATABASE_URI = "postgresql://dbadmin:dbadmin@localhost:5432/etf_competition"
-    SQLALCHEMY_ETFDB_URI = "oracle://username:password@server/db"
+    # SQLALCHEMY_BINDS = {
+    #     "etfdb": "oracle://BP03:o3tUtwdn@80.65.65.66/etflab"
+    # }
 
     @staticmethod
     def init_app(app):

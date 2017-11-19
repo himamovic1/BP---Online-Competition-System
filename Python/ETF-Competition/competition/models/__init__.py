@@ -1,5 +1,5 @@
-# from . import User
+# from competition import User
 #
 #
-# # def load_user(user_id):
-#     return User.query.get(int(user_id))
+# def load_user(user_id):
+# 	return User.query.get(int(user_id))

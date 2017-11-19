@@ -95,6 +95,12 @@
      word-break: break-all;
 }
 
+.text-light {
+	color: #484a4d!important;
+}
+.text-dark {
+	color: #4e565c!important
+}
 
 @media (min-width: 768px) {
   .text-sm-left {

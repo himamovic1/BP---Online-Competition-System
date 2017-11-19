@@ -1,4 +1,4 @@
-from competition import create_app
+from competition import create_app, db
 from socket import gethostname, gethostbyname
 
 
@@ -14,3 +14,8 @@ if __name__ == '__main__':
 
     app = create_app('development')
     app.run(host=app.config['SERVER_HOST'], debug=app.config['DEBUG'])
+
+    # u = User('John', 0, 'john.doe@gmail.com')
+    # u.password = "1DvaTri!"
+    # db.session.add(u)
+    # db.session.commit()

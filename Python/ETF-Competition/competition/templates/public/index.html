@@ -5,22 +5,35 @@
 {% block content %}
     <div class="d-flex align-items-center justify-content-center h-100 w-100">
 
-        {% if current_user.is_authenticated %}
-            <div class="jumbotron mt-5">
-                <h1>ETF Competition</h1>
-                <p>Dobrodošli, {{ current_user.name }}</p>
-                <p>
-                    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.logout') }}" role="button">Odjava</a>
-                </p>
+        <div class="col-xs-12">
+                <div class="row page-header">
+                    <h1 class="text-dark">Početna</h1>
+                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum velit eget eros suscipit, a tempus odio condimentum. Aenean semper et nibh vel mattis. Praesent interdum quis magna non egestas. Morbi a sollicitudin urna. Nullam blandit massa sed tincidunt porttitor. Aliquam erat volutpat. Fusce sed lobortis lacus.</p>
+                </div>
+
+                <div class="">
+                    <h2 class="text-dark">Obavještenja</h2>
+                    <br/>
+                    <blockquote>
+                        <h2>Suspendisse porttitor lacus eget risus finibus vestibulum</h2>
+                        <p>Vivamus ut interdum nisi. Nullam dignissim lectus vel pharetra feugiat. Suspendisse eros ligula, volutpat eget porta ac, dignissim non risus. Donec nec tristique nunc. Suspendisse sed sem rhoncus arcu elementum eleifend. Pellentesque malesuada felis sem, in molestie diam finibus sed. Integer aliquam commodo pellentesque.</p>
+                    </blockquote>
+
+                    <blockquote>
+                        <h2>Proin pellentesque ante in libero vehicula, eu bibendum mi rhoncus</h2>
+                        <p>Fusce tincidunt velit urna, a facilisis odio hendrerit quis. Integer vel lorem et felis placerat faucibus eget ac justo. Fusce id euismod metus, a dignissim felis. Praesent eget nulla quis erat suscipit placerat. Quisque eu leo in libero finibus viverra non a turpis. Ut in lobortis enim. Aliquam convallis ex sit amet urna vulputate, at accumsan tellus vehicula. </p>
+                    </blockquote>
+
+                    <blockquote>
+                        <h2>Quisque ac ex pulvinar, molestie erat ut, auctor augue</h2>
+                        <p>Integer est enim, sollicitudin a risus non, ornare tristique magna. Ut vestibulum neque ut blandit sollicitudin. Etiam porttitor diam ac lectus volutpat sagittis. Aliquam vitae ultrices augue. Ut suscipit quam dui, ut aliquam enim mattis vitae. Vivamus facilisis odio eu tortor malesuada, ut hendrerit enim sollicitudin. </p>
+                    </blockquote>
+
+                    <blockquote>
+                        <h2>Quisque ac ex pulvinar, molestie erat ut, auctor augue</h2>
+                        <p>Integer est enim, sollicitudin a risus non, ornare tristique magna. Ut vestibulum neque ut blandit sollicitudin. Etiam porttitor diam ac lectus volutpat sagittis. Aliquam vitae ultrices augue. Ut suscipit quam dui, ut aliquam enim mattis vitae. Vivamus facilisis odio eu tortor malesuada, ut hendrerit enim sollicitudin. </p>
+                    </blockquote>
+                </div>
             </div>
-        {% else %}
-            <div class="jumbotron mt-5">
-                <h1>ETF Competition</h1>
-                <p>Welcome to the official site of ETF Competition. To continue please sign in.</p>
-                <p>
-                    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}" role="button">Sign in</a>
-                </p>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}
