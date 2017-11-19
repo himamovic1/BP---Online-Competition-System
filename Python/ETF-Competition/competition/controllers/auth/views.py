@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, logout_user
 from competition import User
 from competition.controllers.auth import auth_bp
 from competition.controllers.auth.forms import LoginForm
+from competition.services.auth import AuthService
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -11,19 +12,17 @@ def login():
     login_form = LoginForm()
 
     if login_form.validate_on_submit():
-        user = User.query.filter_by(email=login_form.email.data).first()
-
-        if user is not None and user.verify_password(login_form.password.data):
-            login_user(user)
+        if AuthService.login(login_form.email.data, login_form.password.data):
             return redirect(request.args.get('next') or url_for('competition.list_all'))
+        else:
+            flash('Invalid credentials')
 
-        flash('Invalid credentials')
     return render_template('auth/login.html', form=login_form)
 
 
 @auth_bp.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    flash('You have logged out.')
+    AuthService.logout()
+    flash('Uspješno ste se odjavili.')
     return render_template('public/index.html')
