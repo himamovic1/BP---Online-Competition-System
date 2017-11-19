@@ -19,15 +19,26 @@ class CompetitionService:
         return comp
 
     @staticmethod
-    def read(competition_id):
-        return Competition.query.filter_by(id=competition_id)
-
-    def update(self):
-        pass
+    def read(name, date):
+        return Competition.query.filter_by(name=name, date=date).first()
 
     @staticmethod
-    def delete(competition_id, commit=True):
-        comp = Competition.query.filter_by(id=competition_id)
+    def read_all():
+        return Competition.query.all()
+
+    @staticmethod
+    def update(name, date, new_name, new_date, new_field_id):
+        comp = CompetitionService.read(name, date)
+
+        comp.name = new_name
+        comp.date = new_date
+        comp.field_id = new_field_id
+
+        db.session.commit()
+
+    @staticmethod
+    def delete(name, date, commit=True):
+        comp = CompetitionService.read(name, date)
 
         if comp:
             db.session.delete(comp)

@@ -9,7 +9,8 @@ from competition.services.competition import CompetitionService
 @competition_bp.route('/view/all')
 @login_required
 def list_all():
-    return render_template('competition/list.html')
+    data = CompetitionService.read_all()
+    return render_template('competition/list.html', competition_list=data)
 
 
 @competition_bp.route('/view/calendar')
@@ -33,3 +34,31 @@ def add_new():
             return render_template('competition/list.html')
 
     return render_template('competition/add_new.html', form=form)
+
+
+@competition_bp.route('/delete/<name>/<date>', methods=['GET', 'POST'])
+@login_required
+def update(name, date):
+    comp = CompetitionService.read(name, date)
+    form = CreateCompetitionForm()
+
+    form.name.data = comp.name
+    form.date.date = str(comp.date)
+    form.subject.data = comp.field
+
+    if form.validate_on_submit():
+        CompetitionService.update(name, date, form.name.data, form.date.data, form.subject.data)
+        flash("Uspješna izmjena podataka")
+        return list_all()
+    else:
+        flash("Pogrešno uneseni podaci")
+
+    return render_template('competition/add_new.html', form=form)
+
+
+@competition_bp.route('/delete/<name>/<date>')
+@login_required
+def delete(name, date):
+    CompetitionService.delete(name, date)
+    flash('Uspješno ste obrisali takmičenje')
+    return list_all()

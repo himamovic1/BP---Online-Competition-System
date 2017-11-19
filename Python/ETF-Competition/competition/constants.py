@@ -1,4 +1,4 @@
-from competition import User, Field
+from competition import User, Field, Competition
 
 
 def seed(database):
@@ -27,6 +27,11 @@ def seed(database):
         Field(name='Paralelni računarski sistemi'),
         Field(name='Multimedijalni sistemi'),
     ]
+
+    # Competitions
+    data.append(Competition("Prvo takmičenje", "11.12.2018", 1))
+    data.append(Competition("Drugo takmičenje", "11.01.2018", 1))
+    data.append(Competition("Treće takmičenje", "01.12.2018", 1))
 
     # Seeding the data to db session
     for o in data:
