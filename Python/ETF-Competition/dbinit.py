@@ -1,4 +1,5 @@
-from competition import db, create_app, User
+from competition import db, create_app
+from competition.constants import seed
 
 if __name__ == '__main__':
     app = create_app('development')
@@ -13,13 +14,15 @@ if __name__ == '__main__':
         if ans not in ('Y', 'y'):
             exit()
 
+        print("Nuking the database...")
         db.drop_all()
+
+        print("Rebuilding the database...")
         db.create_all()
-        print("Finished :)")
 
-        # Seed
-        u = User(name='John', surname='Doe', email='john.doe@gmail.com')
-        u.password = "1DvaTri!"
+        # Adding seed data to session
+        print('And the Lord said "Let there be data".')
+        seed(db)
 
-        db.session.add(u)
         db.session.commit()
+        print("All done, enjoy mate :)")
