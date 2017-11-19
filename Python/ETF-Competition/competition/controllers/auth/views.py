@@ -23,7 +23,7 @@ def login():
 @auth_bp.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    AuthService.logout()
     flash('Uspješno ste se odjavili.')
     return redirect('/')
 

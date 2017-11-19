@@ -24,7 +24,7 @@ label {
 	font-weight: lighter;
 }
 
-#login-form-container #submit {
+#submit {
 	background: #26B99A;
 	border: 1px solid #169F85;
 	color: white;
