@@ -8,7 +8,7 @@
         {% if current_user.is_authenticated %}
             <div class="jumbotron mt-5">
                 <h1>ETF Competition</h1>
-                <p>Dobrodošli, John</p>
+                <p>Dobrodošli, {{ current_user.name }}</p>
                 <p>
                     <a class="btn btn-primary btn-lg" href="{{ url_for('auth.logout') }}" role="button">Odjava</a>
                 </p>
