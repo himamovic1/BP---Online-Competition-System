@@ -38,7 +38,7 @@ class CompetitionService:
 
     @staticmethod
     def search(search_query):
-        result = Competition.query.filter(Competition.name.like('%' + search_query + '%')).all()
+        result = Competition.query.filter(Competition.name.ilike('%' + search_query.lower() + '%')).all()
         #result = result.order_by(Competition.name).all()
         return result
 
