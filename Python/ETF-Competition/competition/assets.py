@@ -21,6 +21,7 @@ js_bundle = Bundle(
     'plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     'plugins/fullcalendar/fullcalendar.js',
     'plugins/build/js/custom.min.js',
+    'scripts/global.js',
     filters='jsmin',
     output='build/bundle.js'
 )

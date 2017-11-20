@@ -7,6 +7,44 @@
         <h1>Pregled liste takmičenja</h1>
     </div>
 
+<div class="row">
+		<div class="col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+                    <h2>Pretraga takmičenja</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+				<div class="x_content">
+					<div class="input-group mb-5">
+						<input id="competition-search-query" type="text" class="form-control" placeholder="Unesite pojam pretrage...">
+						<span class="input-group-btn">
+							<button id="competition-search" class="btn btn-default" type="button">Traži</button>
+						</span>
+			        </div>
+
+					<div id="competition-search-results-container">
+						<table id="competition-search-results" class="table table-striped d-none">
+							<thead>
+								<tr>
+									<th>Naziv</th>
+									<th>Datum održavanja</th>
+									<th>Oblast</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
     <div class="row">
         <div class="col-sm-12">
             <div class="x_panel">

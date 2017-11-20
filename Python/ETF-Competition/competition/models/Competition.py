@@ -18,3 +18,6 @@ class Competition(db.Model):
         self.name = name
         self.date = date
         self.field_id = field_id
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

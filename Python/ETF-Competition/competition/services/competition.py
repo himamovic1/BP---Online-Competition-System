@@ -1,4 +1,4 @@
-from competition import Competition, Field, db
+from competition import Competition, db
 
 
 class CompetitionService:
@@ -35,6 +35,12 @@ class CompetitionService:
         comp.field_id = new_field_id
 
         db.session.commit()
+
+    @staticmethod
+    def search(search_query):
+        result = Competition.query.filter(Competition.name.like('%' + search_query + '%')).all()
+        #result = result.order_by(Competition.name).all()
+        return result
 
     @staticmethod
     def delete(name, date, commit=True):

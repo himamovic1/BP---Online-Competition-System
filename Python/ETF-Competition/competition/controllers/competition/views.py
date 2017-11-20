@@ -36,7 +36,7 @@ def add_new():
     return render_template('competition/add_new.html', form=form)
 
 
-@competition_bp.route('/delete/<name>/<date>', methods=['GET', 'POST'])
+@competition_bp.route('/update/<name>/<date>', methods=['GET', 'POST'])
 @login_required
 def update(name, date):
     comp = CompetitionService.read(name, date)
