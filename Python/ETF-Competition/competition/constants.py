@@ -1,4 +1,4 @@
-from competition import User, Field, Competition
+from competition import User, Field, Competition, Student
 
 
 def seed(database):
@@ -18,6 +18,10 @@ def seed(database):
     u2 = User(name='Demo', surname='User', email='demo@test.com')
     u2.password = "demo"
     data.append(u2)
+
+    s1 = Student(name='Mary', surname='Lilly', email='mary@test.com', index_number='12345', study_year=3)
+    s1.password = 'demo123'
+    data.append(s1)
 
     # Fields
     data += [

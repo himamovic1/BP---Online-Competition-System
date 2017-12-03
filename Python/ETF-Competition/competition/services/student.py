@@ -4,8 +4,8 @@ from competition import db, Student
 class StudentService:
 
     @staticmethod
-    def read(index_number):
-        return Student.query.filter_by(index_number = index_number).first()
+    def read(user_id):
+        return Student.query.filter_by(user_id = user_id).first()
 
 
     @staticmethod

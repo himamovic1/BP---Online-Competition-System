@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Takmičari | ETF Competition{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Pregled prijava na takmičenja</h1>
+    </div>
+
+<div class="row">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30"></p>
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Korisnik</th>
+
+	                            <th>Naziv takmičenja</th>
+                                <th>Datum takmičenja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if competitor_list|length > 0 %}
+                                {% for comp in competitor_list %}
+                                    <tr>
+                                        <td>{{ comp.user_id }}</td>
+	                                    <td>{{ comp.competition_name }}</td>
+	                                    <td>{{ comp.competition_date }}</td>
+                                        <td><a href="{{ url_for('competitors.update', id=comp.id) }}">Izmjeni</a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        Nema prijava na takmičenja
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

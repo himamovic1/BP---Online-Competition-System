@@ -5,9 +5,9 @@ class ParticipationService:
     """ Service class that deals with CRUD operations for Participations """
 
     @staticmethod
-    def create(user_id, competition_name, competition_date, commit=True):
-
-        participation = Participation(user_id=user_id, competition_name=competition_name, competition_date=competition_date)
+    def create(name, surname, index_number, year, competition_date, competition_name, commit=True):
+        usr = Student.query.filter_by(index_number=index_number).first()
+        participation = Participation(user_id=usr.user_id, competition_name=competition_name, competition_date=competition_date)
 
         db.session.add(participation)
 
@@ -17,22 +17,27 @@ class ParticipationService:
         return participation
 
     @staticmethod
-    def read(user_id, competition_name, competition_date):
-        return Participation.query.filter_by(user_id, competition_name, competition_date).first()
+    def read(id):
+        return Participation.query.filter_by(id=id).first()
 
     @staticmethod
     def read_all():
         return Participation.query.all()
 
-    # @staticmethod
-    # def update(name, date, new_name, new_date, new_field_id):
-    #     comp = Participation.read(name, date)
-    #
-    #     comp.name = new_name
-    #     comp.date = new_date
-    #     comp.field_id = new_field_id
-    #
-    #     db.session.commit()
+    @staticmethod
+    def update(id, name, surname, index_number, new_index_number, year, competition_name, competition_date):
+        usr = Student.query.filter_by(index_number=index_number)
+        usr.name = name
+        usr.surname = surname
+        usr.index_number = new_index_number
+        usr.year = year
+
+        comp = Participation.read(id=id)
+        comp.user_id = usr.user_id
+        comp.competition_name = competition_name
+        comp.competition_date = competition_date
+
+        db.session.commit()
 
     # @staticmethod
     # def search(search_query):
@@ -40,14 +45,14 @@ class ParticipationService:
     #     #result = result.order_by(Competition.name).all()
     #     return result
 
-    @staticmethod
-    def delete(user_id, competition_name, competition_date, commit=True):
-        participation = ParticipationService.read(user_id, competition_name, competition_date)
-
-        if participation:
-            db.session.delete(participation)
-        else:
-            raise Exception("Given user does not exist")
-
-        if commit:
-            db.session.commit()
+    # @staticmethod
+    # def delete(user_id, competition_name, competition_date, commit=True):
+    #     participation = ParticipationService.read(user_id, competition_name, competition_date)
+    #
+    #     if participation:
+    #         db.session.delete(participation)
+    #     else:
+    #         raise Exception("Given user does not exist")
+    #
+    #     if commit:
+    #         db.session.commit()

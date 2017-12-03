@@ -12,22 +12,26 @@
         <div class="col-sm-12">
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="form-group  required">
+	                <form action="{{ url_for('competitors.add_new') }}" method="post">
+
+	                {{ form.csrf_token }}
+                    <div class="form-group col-sm-6 col-xs-12 required">
                         <label class="control-label" for="name">Ime takmičara</label>
                         {{ form.name(class_="form-control") }}
                     </div>
-                    <div class="form-group  required">
+                    <div class="form-group col-sm-6 col-xs-12 required">
                         <label class="control-label" for="surnname">Prezime takmičara</label>
                         {{ form.surname(class_="form-control") }}
                     </div>
-                    <div class="form-group  required">
+                    <div class="form-group col-sm-6 col-xs-12 required">
                         <label class="control-label" for="index_number">Broj indeksa</label>
                         {{ form.index_number(class_="form-control") }}
                     </div>
-                    <div class="form-group  required">
+                    <div class="form-group col-sm-6 col-xs-12 required">
                         <label class="control-label" for="year">Godina studija</label>
                         {{ form.year(class_="form-control") }}
                     </div>
+					<div class="col-sm-12 col-xs-12">
 
                     {{ form.competition_name(class_="form-control hidden") }}
                     {{ form.competition_date(class_="form-control hidden") }}
@@ -47,8 +51,9 @@
 							<thead>
 								<tr>
 									<th>Naziv</th>
+                                    <th>Oblast</th>
 									<th>Datum održavanja</th>
-									<th>Oblast</th>
+                                    <th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -58,6 +63,9 @@
                     </div>
 
                     {{ form.submit(class_="btn btn-default") }}
+
+					</div>
+	                </form>
                 </div>
             </div>
         </div>
@@ -68,7 +76,8 @@
     {{ super() }}
 
     <script>
-        $(function() {
+    $(function() {
+
         $("#competition-search-query").on("keyup", function(e) {
             if(e.which == 13)
                 $("#competition-search").trigger("click");
@@ -83,14 +92,24 @@
             let page_base = window.location.protocol + "//" + window.location.host + "/";
 
             $.get(page_base + "api/search/competition/" + search_query, function(data) {
+                let results_container = $("#competition-search-results");
                 let results_table = $("#competition-search-results > tbody");
                 results_table.empty();
 
                 $.each(data, function(i, e) {
-                    results_table.append("<tr><td>" + e.name + "</td><td>" + e.field + "</td><td>" + e.date + "</td><td><span class='checkmark'></span></td></tr>");
+                    results_table.append("<tr><td>" + e.name + "</td><td>" + e.field + "</td><td>" + e.date + "</td><td><input type='radio' name='competition_opt' data-cname='"+e.name+"' data-cdate='"+e.date+"'/></td></tr>");
+                });
+
+                if(results_container.hasClass("d-none"))
+                    results_container.removeClass("d-none");
+
+                $("input[type='radio'][name='competition_opt']").on("change", function() {
+                    $("#competition_name").val($(this).data("cname"));
+                    $("#competition_date").val($(this).data("cdate"));
                 });
             });
         });
     });
+
     </script>
 {% endblock %}
