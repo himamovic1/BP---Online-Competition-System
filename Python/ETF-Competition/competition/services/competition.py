@@ -10,7 +10,6 @@ class CompetitionService:
 
         comp = Competition(name=name, date=date, field_id=field.id)
         comp.field = field
-
         db.session.add(comp)
 
         if commit:

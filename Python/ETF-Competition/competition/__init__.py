@@ -3,7 +3,9 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
+import competition
 from competition.assets import assets
+from competition.utils import Permission
 from .config import config as app_config
 
 # Create extension instances
@@ -25,7 +27,10 @@ from competition.models.Result import Result
 from competition.models.User import User
 from competition.models.Student import Student
 from competition.models.Administrator import Administrator
+
+
 # from competition.models.etf import User
+
 
 def create_app(config_name="default"):
     """ App Factory Function """

@@ -22,6 +22,7 @@ js_bundle = Bundle(
     'plugins/fullcalendar/fullcalendar.js',
     'plugins/build/js/custom.min.js',
     'scripts/global.js',
+    'plugins/dropzone/dropzone.js',
     filters='jsmin',
     output='build/bundle.js'
 )
