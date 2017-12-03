@@ -59,4 +59,5 @@ def register_blueprints(app):
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(competition_bp, url_prefix='/competition')
+    app.register_blueprint(api_blueprint, url_prefix='/competitors')
     app.register_blueprint(api_blueprint, url_prefix='/api')

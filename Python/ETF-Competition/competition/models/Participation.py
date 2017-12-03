@@ -16,3 +16,11 @@ class Participation(db.Model):
 	user_id = db.Column(db.Integer, ForeignKey("student.user_id"))
 	competition_name = db.Column(db.String(255))
 	competition_date = db.Column(db.DateTime)
+
+	def __init__(self, user_id, competition_name, competition_date):
+		self.user_id = user_id
+		self.competition_name = competition_name
+		self.competition_date = competition_date
+
+	def as_dict(self):
+		return {c.name: getattr(self, c.name) for c in self.__table__.columns}

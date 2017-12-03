@@ -18,6 +18,11 @@ class CreateCompetitionForm(FlaskForm):
         validators=[DataRequired()]
     )
 
+    time = StringField(
+        'Vrijeme održavanja',
+        validators=[DataRequired()]
+    )
+
     subject = QuerySelectField(
         'Oblast:',
         validators=[DataRequired()],

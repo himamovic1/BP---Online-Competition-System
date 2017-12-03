@@ -22,3 +22,6 @@ class Student(User):
 		super(Student, self).__init__(name, surname, email)
 		self.index_number = index_number
 		self.study_year = study_year
+
+	def as_dict(self):
+		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
