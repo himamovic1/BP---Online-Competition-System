@@ -1,8 +1,10 @@
-from flask import render_template, flash
+import os
+from flask import render_template, flash, request, jsonify
 from flask_login import login_required
 
 from competition.controllers.competition import competition_bp
-from competition.controllers.competition.forms import CreateCompetitionForm
+from competition.controllers.competition.forms import CreateCompetitionForm, RegisterCompetitionResults
+from competition.decorators import admin_required
 from competition.services.competition import CompetitionService
 
 
@@ -62,3 +64,32 @@ def delete(name, date):
     CompetitionService.delete(name, date)
     flash('Uspješno ste obrisali takmičenje')
     return list_all()
+
+
+@competition_bp.route('/results/upload/<name>/<date>', methods=['GET'])
+@login_required
+def get_plugin_form(name, date):
+    form = RegisterCompetitionResults()
+    return render_template('competition/upload_results.html', form=form)
+
+
+@competition_bp.route('/results/upload', methods=['POST'])
+@login_required
+def upload_results():
+
+    file = request.files.getlist('file')[0]
+    if file:
+        file.save(os.path.join(os.getcwd(), 'storage', 'uploads', file.filename))
+        print(file.filename)
+
+        resp = jsonify({'upload': 'success'})
+        return resp
+
+    flash('Something went wrong')
+    resp = jsonify({'error': 'Oh snap! An error occured.'})
+    return resp
+
+
+
+
+

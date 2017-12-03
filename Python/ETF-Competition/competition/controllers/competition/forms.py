@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField
+from wtforms import StringField, SelectField, SubmitField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired
 
@@ -32,3 +32,9 @@ class CreateCompetitionForm(FlaskForm):
     )
 
     submit = SubmitField('Kreiraj')
+
+
+class RegisterCompetitionResults(FlaskForm):
+    name = StringField('Enter sentence', validators=[DataRequired()])
+    import_file = FileField('Upload a file', validators=[DataRequired()])
+    submit = SubmitField('Upload')
