@@ -1,5 +1,5 @@
 import os
-from flask import render_template, flash, request, jsonify
+from flask import render_template, flash, request, jsonify, redirect, url_for
 from flask_login import login_required
 
 from competition.controllers.competition import competition_bp
@@ -15,25 +15,20 @@ def list_all():
     return render_template('competition/list.html', competition_list=data)
 
 
-@competition_bp.route('/view/calendar')
-@login_required
-def calendar():
-    return render_template('competition/calendar.html')
-
-
 @competition_bp.route('/add/new', methods=['GET', 'POST'])
 @login_required
 def add_new():
     form = CreateCompetitionForm()
+    form.set_create_mode()
 
     if form.validate_on_submit():
-        comp = CompetitionService.create(form.name.data, form.date.data, form.subject.data)
+        comp = CompetitionService.create_from_object(form.pop_competition(), commit=True)
 
         if comp is None:
-            flash('Nije moguće dodati takmičenje.')
+            flash('Nije moguće kreirati takmičenje.')
         else:
             flash('Uspješno ste kreirali takmičenje.')
-            return render_template('competition/list.html')
+            return redirect(url_for('competition.list_all'))
 
     return render_template('competition/add_new.html', form=form)
 
@@ -43,15 +38,16 @@ def add_new():
 def update(name, date):
     comp = CompetitionService.read(name, date)
     form = CreateCompetitionForm()
+    form.set_edit_mode()
 
-    form.name.data = comp.name
-    form.date.date = str(comp.date)
-    form.subject.data = comp.field
+    if request.method == 'GET':
+        form.put_competition(comp)
 
-    if form.validate_on_submit():
-        CompetitionService.update(name, date, form.name.data, form.date.data, form.subject.data)
+    elif form.validate_on_submit():
+        CompetitionService.update(comp, form, commit=True)
         flash("Uspješna izmjena podataka")
-        return list_all()
+        return redirect(url_for('competition.list_all'))
+
     else:
         flash("Pogrešno uneseni podaci")
 
