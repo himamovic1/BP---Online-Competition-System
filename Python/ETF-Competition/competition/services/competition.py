@@ -5,12 +5,18 @@ class CompetitionService:
     """ Service class that deals with CRUD operations for Competition objects """
 
     @staticmethod
-    def create(name, date, field, commit=True):
+    def create(**kwargs):
         # subject = Field.query.filter_by(id=field_id).first()
 
-        comp = Competition(name=name, date=date, field_id=field.id)
-        comp.field = field
-        db.session.add(comp)
+        comp = Competition(name=kwargs['name'], date=kwargs['date'], field_id=kwargs['field'].id)
+        comp.field = kwargs['field']
+
+        return CompetitionService.add(comp, kwargs.get('commit', False))
+
+    @staticmethod
+    def create_from_object(comp, commit=False):
+        if comp is not None:
+            db.session.add(comp)
 
         if commit:
             db.session.commit()
@@ -26,14 +32,11 @@ class CompetitionService:
         return Competition.query.all()
 
     @staticmethod
-    def update(name, date, new_name, new_date, new_field_id):
-        comp = CompetitionService.read(name, date)
+    def update(comp, comp_form, commit=False):
+        comp_form.refresh_competition(comp)
 
-        comp.name = new_name
-        comp.date = new_date
-        comp.field_id = new_field_id
-
-        db.session.commit()
+        if commit:
+            db.session.commit()
 
     @staticmethod
     def search(search_query):
@@ -42,7 +45,7 @@ class CompetitionService:
         return result
 
     @staticmethod
-    def delete(name, date, commit=True):
+    def delete(name, date, commit=False):
         comp = CompetitionService.read(name, date)
 
         if comp:
