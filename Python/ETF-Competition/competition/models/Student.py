@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-from competition import db
+from competition import db, Role, Permission
 from competition.models import Participation
 from competition.models.User import User
 
@@ -22,6 +22,7 @@ class Student(User):
         super(Student, self).__init__(name, surname, email)
         self.index_number = index_number
         self.study_year = study_year
+        self.role = Role.query.filter_by(permissions=Permission.STUDENT_ACCESS).first()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

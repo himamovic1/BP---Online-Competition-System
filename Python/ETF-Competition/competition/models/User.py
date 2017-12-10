@@ -3,8 +3,8 @@ from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from competition import db, login_manager
-from competition.models.Role import Role
 from competition.utils import Permission
+from competition.models.Role import Role
 
 
 class User(UserMixin, db.Model):
@@ -25,7 +25,8 @@ class User(UserMixin, db.Model):
         self.email = email
 
         # Default role with full access
-        self.role = Role.query.filter_by(default=True).first()
+        if self.role is None:
+            self.role = Role.query.filter_by(default=True).first()
 
     @property
     def password(self):
@@ -55,6 +56,7 @@ class User(UserMixin, db.Model):
         return self.can(Permission.FULL_ACCESS)
 
 
+# Function to get user on login
 @login_manager.user_loader
 def load_user(uid):
     return User.query.get(int(uid))

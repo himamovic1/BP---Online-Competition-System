@@ -1,6 +1,6 @@
 import os
 from flask import render_template, flash, request, jsonify, redirect, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from competition.controllers.competition import competition_bp
 from competition.controllers.competition.forms import CreateCompetitionForm, RegisterCompetitionResults
@@ -17,6 +17,7 @@ def list_all():
 
 @competition_bp.route('/add/new', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_new():
     form = CreateCompetitionForm()
     form.set_create_mode()
@@ -35,6 +36,7 @@ def add_new():
 
 @competition_bp.route('/update/<name>/<date>', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def update(name, date):
     comp = CompetitionService.read(name, date)
     form = CreateCompetitionForm()
@@ -56,10 +58,11 @@ def update(name, date):
 
 @competition_bp.route('/delete/<name>/<date>')
 @login_required
+@admin_required
 def delete(name, date):
     CompetitionService.delete(name, date)
     flash('Uspješno ste obrisali takmičenje')
-    return list_all()
+    return redirect(url_for('competition.list_all'))
 
 
 @competition_bp.route('/results/upload/<name>/<date>', methods=['GET'])

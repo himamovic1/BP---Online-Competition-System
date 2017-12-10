@@ -1,4 +1,4 @@
-from competition import db
+from competition import db, Permission
 
 
 class Role(db.Model):
@@ -14,7 +14,8 @@ class Role(db.Model):
     def insert_roles():
         roles = {
             'Administrator': (Permission.FULL_ACCESS, False),
-            'Student': (Permission.STUDENT_ACCESS, True)
+            'Student': (Permission.STUDENT_ACCESS, False),
+            'Unknown': (Permission.BANNED_ACCESS, True)
         }
 
         for r in roles:

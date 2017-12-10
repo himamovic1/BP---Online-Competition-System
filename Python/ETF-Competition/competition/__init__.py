@@ -18,6 +18,7 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 # Import models - this has to be after "db = SQLAlchemy()" line
+from competition.models.Role import Role
 from competition.models.Competition import Competition
 from competition.models.Field import Field
 from competition.models.Ownership import Ownership
@@ -29,9 +30,6 @@ from competition.models.Student import Student
 from competition.models.Administrator import Administrator
 
 
-# from competition.models.etf import User
-
-
 def create_app(config_name="default"):
     """ App Factory Function """
     app = Flask(__name__)
@@ -40,6 +38,7 @@ def create_app(config_name="default"):
 
     register_extensions(app)
     register_blueprints(app)
+    register_globals(app)
 
     return app
 
@@ -67,3 +66,11 @@ def register_blueprints(app):
     app.register_blueprint(competition_bp, url_prefix='/competition')
     app.register_blueprint(competitors_bp, url_prefix='/competitors')
     app.register_blueprint(api_blueprint, url_prefix='/api')
+
+
+def register_globals(app):
+    """ Register globally (including templates) available variables and functions. """
+
+    @app.context_processor
+    def inject_permission():
+        return dict(Permission=Permission)

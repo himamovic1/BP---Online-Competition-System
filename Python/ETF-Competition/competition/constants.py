@@ -1,11 +1,15 @@
-from competition import User, Field, Competition, Student
+from competition import User, Field, Competition, Student, Role
 
 
+# Database seed method
 def seed(database):
     """
         Function that makes an initial database data seed
         so we could have something to work on after DB init.
     """
+
+    # User roles are inserted first
+    Role.insert_roles()
 
     # List of object to be added to DB
     data = []
