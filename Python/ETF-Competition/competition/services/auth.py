@@ -1,6 +1,6 @@
 from flask_login import login_user, logout_user
 
-from competition import User
+from competition import User, Student, Administrator
 
 
 class AuthService:

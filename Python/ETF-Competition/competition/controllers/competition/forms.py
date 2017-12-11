@@ -1,13 +1,15 @@
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, FileField
-from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, Regexp
 
-from competition import Competition
+from competition import Competition, Administrator
 from competition.services.field import FieldService
 
 
 class CreateCompetitionForm(FlaskForm):
+    editable = True
 
     name = StringField(
         'Naziv takmičenja:',
@@ -36,13 +38,25 @@ class CreateCompetitionForm(FlaskForm):
         get_label=lambda f: f.name
     )
 
+    ensemble = QuerySelectMultipleField(
+        'Administratori:',
+        validators=[DataRequired()],
+        get_pk=lambda f: f.id,
+        get_label=lambda f: "{} {}".format(f.name, f.surname)
+    )
+
     submit = SubmitField('Kreiraj')
+
+    # Initialize fields with data available after startup
+    def initialize_fields(self):
+        self.ensemble.query_factory = Administrator.query.filter(Administrator.id != current_user.id).all
 
     # Fill form with a competition
     def put_competition(self, comp):
         self.name.data = comp.name
         self.date.data = comp.date
         self.subject.data = comp.field
+        self.ensemble.data = comp.owners
 
     # Create Competition object from form data
     def pop_competition(self):
@@ -56,6 +70,7 @@ class CreateCompetitionForm(FlaskForm):
             )
 
             comp.field = self.subject.data
+            comp.owners = self.ensemble.data
 
         return comp
 
@@ -65,16 +80,19 @@ class CreateCompetitionForm(FlaskForm):
         comp.date = self.date.data,
         comp.field_id = self.subject.data.id
         comp.field = self.subject.data
+        comp.owners = self.ensemble.data
 
     # Update the label according to te usage of form
     def set_create_mode(self):
+        self.editable = True
         self.submit.label.text = 'Kreiraj'
 
     def set_edit_mode(self):
+        self.editable = True
         self.submit.label.text = 'Spasi izmjene'
 
+    def set_read_only_mode(self):
+        self.editable = False
 
-class RegisterCompetitionResults(FlaskForm):
-    name = StringField('Enter sentence', validators=[DataRequired()])
-    import_file = FileField('Upload a file', validators=[DataRequired()])
-    submit = SubmitField('Upload')
+        for field in self._fields.values():
+            field.render_kw = dict(readonly='true', disabled='true')

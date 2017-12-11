@@ -18,3 +18,7 @@ def permission_required(permission):
 
 def admin_required(f):
     return permission_required(Permission.FULL_ACCESS)(f)
+
+
+def student_required(f):
+    return permission_required(Permission.STUDENT_ACCESS)(f)

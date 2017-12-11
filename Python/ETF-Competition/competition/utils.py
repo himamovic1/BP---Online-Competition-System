@@ -1,6 +1,8 @@
+# Class defining list of possible permissions of each user
 class Permission:
     FULL_ACCESS = 0xff
     STUDENT_ACCESS = 0x01
+    PUBLIC_ACCESS = 0x00
 
     CREATE_COMPETITION = 0x01
     MODIFY_COMPETITION = 0x02
