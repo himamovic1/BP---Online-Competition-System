@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Unos rezultata | ETF Competition{% endblock %}
+
+{% block style %}
+    {{ dropzone.load() }}
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Unos rezultata za takmičenje: <strong>{{ comp.name }}</strong></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    {{ dropzone.create(action_view='competition.upload_results', name=comp.name, date=comp.date) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+{% endblock %}

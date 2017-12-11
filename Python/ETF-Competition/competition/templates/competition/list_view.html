@@ -85,14 +85,23 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li>
-                                                    <a href="{{ url_for('competition.delete', name=comp.name, date=comp.date) }}">Obriši</a>
+                                                    <a href="{{ url_for('competition.list_one', name=comp.name, date=comp.date) }}">Pogledaj detalje</a>
                                                 </li>
-                                                <li>
-                                                    <a href="{{ url_for('competition.update', name=comp.name, date=comp.date) }}">Promijeni</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ url_for('competition.upload_results', name=comp.name, date=comp.date) }}">Dodaj rezultate</a>
-                                                </li>
+                                                {% if is_admin(current_user) and is_owner(current_user, comp) %}
+                                                    <li>
+                                                        <a href="{{ url_for('competition.delete', name=comp.name, date=comp.date) }}">Obriši</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ url_for('competition.update', name=comp.name, date=comp.date) }}">Promijeni</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ url_for('competition.upload_results', name=comp.name, date=comp.date) }}">Dodaj rezultate</a>
+                                                    </li>
+                                                {% elif is_student(current_user) %}
+                                                    <li>
+                                                        <a href="{{ url_for('competition.sign_up', name=comp.name, date=comp.date) }}">Prijavi se</a>
+                                                    </li>
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     </td>

@@ -1,4 +1,4 @@
-from competition import User, Field, Competition, Student, Role
+from competition import User, Field, Competition, Student, Role, Administrator
 
 
 # Database seed method
@@ -12,23 +12,39 @@ def seed(database):
     Role.insert_roles()
 
     # List of object to be added to DB
-    data = []
+    users = []
 
     # Users
-    u1 = User(name='John', surname='Doe', email='john.doe@gmail.com')
-    u1.password = "1DvaTri!"
-    data.append(u1)
+    s1 = Student(name='John', surname='Doe', email='john.doe@gmail.com', index_number='10000', study_year=3)
+    s1.password = "demo"
+    users.append(s1)
 
-    u2 = User(name='Demo', surname='User', email='demo@test.com')
-    u2.password = "demo"
-    data.append(u2)
+    s2 = Student(name='Demo', surname='User', email='demo@test.com', index_number='10001', study_year=2)
+    s2.password = "demo"
+    users.append(s2)
 
-    s1 = Student(name='Mary', surname='Lilly', email='mary@test.com', index_number='12345', study_year=3)
-    s1.password = 'demo123'
-    data.append(s1)
+    s3 = Student(name='Mary', surname='Lilly', email='mary@test.com', index_number='10002', study_year=1)
+    s3.password = 'student'
+    users.append(s3)
+
+    a1 = Administrator(name='Some', surname='Body', email='once@told.me', position='Assistent')
+    a1.password = 'admin'
+    users.append(a1)
+
+    a2 = Administrator(name='Eddy', surname='Maiden', email='eddy@666.com', position='Professor')
+    a2.password = 'admin'
+    users.append(a2)
+
+    a3 = Administrator(name='Master', surname='Yoda', email='lost@you.are', position='Professor')
+    a3.password = 'admin'
+    users.append(a3)
+
+    a4 = Administrator(name='Qui Gon', surname='Gin', email='sw@all.ower', position='Professor')
+    a4.password = 'admin'
+    users.append(a4)
 
     # Fields
-    data += [
+    fields = [
         Field(name='Baze podataka'),
         Field(name='Operativna istraživanja'),
         Field(name='Optimizacija resursa'),
@@ -37,10 +53,15 @@ def seed(database):
     ]
 
     # Competitions
-    data.append(Competition("Prvo takmičenje", "11.12.2018", 1))
-    data.append(Competition("Drugo takmičenje", "11.01.2018", 1))
-    data.append(Competition("Treće takmičenje", "01.12.2018", 1))
+    competitions = [
+        Competition("Prvo takmičenje", "11.12.2018", 1),
+        Competition("Drugo takmičenje", "11.01.2018", 1),
+        Competition("Treće takmičenje", "01.12.2018", 1)
+    ]
+
+    users[4].competitions.append(competitions[1])
 
     # Seeding the data to db session
+    data = fields + competitions + users
     for o in data:
         database.session.add(o)

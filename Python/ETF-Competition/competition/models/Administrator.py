@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from competition import db, Permission
-from competition.models import Ownership
+from competition.models.Associations import Ownership
 from competition.models.Role import Role
 from competition.models.User import User
 
@@ -12,7 +12,7 @@ class Administrator(User):
 
     user_id = db.Column(db.Integer, ForeignKey("user.id"), primary_key=True)
     position = db.Column(db.String(255), nullable=False)
-    competitions = relationship("Ownership")
+    competitions = relationship("Competition", secondary=Ownership, backref='administrator')
 
     __mapper_args__ = {
         'polymorphic_identity': 'administrator',

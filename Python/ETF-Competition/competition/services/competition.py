@@ -1,4 +1,6 @@
-from competition import Competition, db
+from flask_login import current_user
+
+from competition import Competition, db, Administrator
 
 
 class CompetitionService:
@@ -16,10 +18,11 @@ class CompetitionService:
     @staticmethod
     def create_from_object(comp, commit=False):
         if comp is not None:
+            comp.owners.append(Administrator.query.filter_by(user_id=current_user.id).first())
             db.session.add(comp)
 
-        if commit:
-            db.session.commit()
+            if commit:
+                db.session.commit()
 
         return comp
 
@@ -30,6 +33,11 @@ class CompetitionService:
     @staticmethod
     def read_all():
         return Competition.query.all()
+
+    @staticmethod
+    def read_mine():
+        admin = Administrator.query.filter_by(user_id=current_user.id).first()
+        return admin.competitions
 
     @staticmethod
     def update(comp, comp_form, commit=False):
@@ -55,3 +63,4 @@ class CompetitionService:
 
         if commit:
             db.session.commit()
+

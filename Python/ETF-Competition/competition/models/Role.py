@@ -15,7 +15,7 @@ class Role(db.Model):
         roles = {
             'Administrator': (Permission.FULL_ACCESS, False),
             'Student': (Permission.STUDENT_ACCESS, False),
-            'Unknown': (Permission.BANNED_ACCESS, True)
+            'Unknown': (Permission.PUBLIC_ACCESS, True)
         }
 
         for r in roles:
