@@ -1,5 +1,5 @@
-from competition import db, Student
-
+from competition import db, Student, User, Participation
+from sqlalchemy import or_, and_
 
 class StudentService:
 
@@ -29,6 +29,31 @@ class StudentService:
         result = Student.query.filter(Student.name.ilike('%' + search_query.lower() + '%')).all()
         # result = result.order_by(Competition.name).all()
         return result
+
+    @staticmethod
+    def search_by_attributes(name, surname, index, study_year):
+        result = []
+
+        if (study_year == ''):
+            result = Student.query.filter(and_(
+                Student.name.ilike('%' + name.lower() + '%'),
+                Student.surname.ilike('%' + surname.lower() + '%'),
+                Student.index_number.ilike('%' + index.lower() + '%')
+            )).all()
+        else:
+            result = Student.filter(and_(
+                Student.name.ilike('%' + name.lower() + '%'),
+                Student.surname.ilike('%' + surname.lower() + '%'),
+                Student.index_number.ilike('%' + index.lower() + '%')
+            )).filter_by(study_year=study_year).all()
+
+        return result
+
+    @staticmethod
+    def search_by_competition_participation(competition_name, competition_date):
+        return Student.query.filter(Participation.competition_date == competition_date).\
+	    filter(Participation.competition_name == competition_name).\
+        filter(Student.user_id == Participation.user_id).all()
 
     @staticmethod
     def delete(index_number, commit=True):

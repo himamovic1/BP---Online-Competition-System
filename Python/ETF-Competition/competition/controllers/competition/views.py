@@ -12,15 +12,20 @@ from competition.services.competition import CompetitionService
 #################################################
 # Read region                                   #
 #################################################
+from competition.services.student import StudentService
+
+
 @competition_bp.route('/view/single/<name>/<date>', methods=['GET'])
 @login_required
 def list_one(name, date):
+    participations = StudentService.search_by_competition_participation(competition_name=name, competition_date=date)
+
     comp = CompetitionService.read(name, date)
     form = CreateCompetitionForm()
     form.initialize_fields()
     form.put_competition(comp)
     form.set_read_only_mode()
-    return render_template('competition/single_view.html', form=form)
+    return render_template('competition/single_view.html', form=form, participations=participations)
 
 
 @competition_bp.route('/view/mine')

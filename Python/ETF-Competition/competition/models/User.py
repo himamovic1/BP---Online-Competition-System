@@ -19,14 +19,18 @@ class User(UserMixin, db.Model):
 
     role_id = db.Column(db.Integer, ForeignKey("roles.id"))
 
-    def __init__(self, name, surname, email):
+    def __init__(self, name, surname, email, type):
         self.name = name
         self.surname = surname
         self.email = email
+        self.type = type
 
         # Default role with full access
         if self.role is None:
             self.role = Role.query.filter_by(default=True).first()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     @property
     def password(self):

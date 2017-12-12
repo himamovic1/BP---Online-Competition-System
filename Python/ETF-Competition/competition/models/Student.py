@@ -19,7 +19,7 @@ class Student(User):
     }
 
     def __init__(self, name, surname, email, index_number, study_year):
-        super(Student, self).__init__(name, surname, email)
+        super(Student, self).__init__(name, surname, email, 'student')
         self.index_number = index_number
         self.study_year = study_year
         self.role = Role.query.filter_by(permissions=Permission.STUDENT_ACCESS).first()

@@ -25,6 +25,10 @@ class ParticipationService:
         return Participation.query.all()
 
     @staticmethod
+    def read_for_competition(name, date):
+        return Participation.query.filter_by(competition_name=name, competition_date=date).all()
+
+    @staticmethod
     def update(id, name, surname, index_number, new_index_number, year, competition_name, competition_date):
         usr = Student.query.filter_by(index_number=index_number)
         usr.name = name

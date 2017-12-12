@@ -19,7 +19,7 @@ class Administrator(User):
     }
 
     def __init__(self, name, surname, email, position):
-        super(Administrator, self).__init__(name, surname, email)
+        super(Administrator, self).__init__(name, surname, email, 'administrator')
         self.position = position
         self.role = Role.query.filter_by(permissions=Permission.FULL_ACCESS).first()
 

@@ -16,11 +16,11 @@
 
 	                {{ form.csrf_token }}
                     <div class="form-group col-sm-6 col-xs-12 required">
-                        <label class="control-label" for="name">Ime takmičara</label>
+                        <label class="control-label" for="name">Ime</label>
                         {{ form.name(class_="form-control") }}
                     </div>
                     <div class="form-group col-sm-6 col-xs-12 required">
-                        <label class="control-label" for="surnname">Prezime takmičara</label>
+                        <label class="control-label" for="surnname">Prezime</label>
                         {{ form.surname(class_="form-control") }}
                     </div>
                     <div class="form-group col-sm-6 col-xs-12 required">
@@ -36,7 +36,26 @@
                     {{ form.competition_name(class_="form-control hidden") }}
                     {{ form.competition_date(class_="form-control hidden") }}
 
-                    <div class="mt-2">
+					<div class="my-4">
+						<span id="students-search-btn" class="btn btn-success">Pretraži studente</span>
+					</div>
+
+					<div id="students-search-results-container" class="row">
+						<table id="students-search-results" class="table table-striped d-none">
+							<thead>
+								<tr>
+									<th>Ime</th>
+                                    <th>Prezime</th>
+									<th>Broj indeksa</th>
+                                    <th>Godina studija</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+
+                    <div class="mt-5">
                         <h4>Takmičenje</h4>
 
                         <div class="input-group mb-5">
@@ -109,6 +128,38 @@
                 });
             });
         });
+
+		$("#students-search-btn").on("click", function() {
+			let name = $("#name").val();
+			let surname = $("#surname").val();
+			let index = $("#index_number").val();
+			let year = $("#year").val();
+
+            if(name.length === 0 && surname.length === 0 && index.length === 0 && year.length === 0)
+                return;
+
+            let page_base = window.location.protocol + "//" + window.location.host + "/";
+
+            $.get(page_base + "api/search/student?name=" + name + "&surname=" + surname + "&index=" + index + "&year=" + year , function(data) {
+				let results_container = $("#students-search-results");
+                let results_table = $("#students-search-results > tbody");
+                results_table.empty();
+
+                $.each(data, function(i, e) {
+                    results_table.append("<tr><td>" + e.name + "</td><td>" + e.surname + "</td><td>" + e.index_number + "</td><td>" + e.study_year + "</td><td><input type='radio' name='student_opt' data-sname='"+e.name+"' data-ssurname='"+e.surname+"' data-sindex='"+e.index_number+"' data-syear='"+e.study_year+"'/></td></tr>");
+                });
+
+                if(results_container.hasClass("d-none"))
+                    results_container.removeClass("d-none");
+
+                $("input[type='radio'][name='student_opt']").on("change", function() {
+                    $("#name").val($(this).data("sname"));
+                    $("#surname").val($(this).data("ssurname"));
+                    $("#index_number").val($(this).data("sindex"));
+                    $("#year").val($(this).data("syear"));
+                });
+            });
+		});
     });
 
     </script>
