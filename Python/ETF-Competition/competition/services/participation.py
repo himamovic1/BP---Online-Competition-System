@@ -22,7 +22,7 @@ class ParticipationService:
 
     @staticmethod
     def read_all():
-        return Participation.query.all()
+        return db.session.query(Student, Participation).filter(Student.user_id == Participation.user_id).all()
 
     @staticmethod
     def read_for_competition(name, date):

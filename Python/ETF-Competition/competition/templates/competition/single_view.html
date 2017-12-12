@@ -13,6 +13,8 @@
             <div class="x_panel">
                 <div class="x_content">
                     {{ wtf.quick_form(form) }}
+
+	                {% if is_admin(current_user) %}
 					<br/>
                     <div>
 	                    <h3>Pregled prijava na takmičenje</h3>
@@ -46,6 +48,7 @@
                             </tbody>
                         </table>
                     </div>
+	                {% endif %}
                 </div>
             </div>
         </div>

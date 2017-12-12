@@ -25,7 +25,7 @@ def list_one(name, date):
     form.initialize_fields()
     form.put_competition(comp)
     form.set_read_only_mode()
-    return render_template('competition/single_view.html', form=form, participations=participations)
+    return render_template('competition/single_view.html', form=form, showParticipations=0, participations=participations)
 
 
 @competition_bp.route('/view/mine')
@@ -63,7 +63,7 @@ def add_new():
             flash('Uspješno ste kreirali takmičenje.')
             return redirect(url_for('competition.list_all'))
 
-    return render_template('competition/single_view.html', form=form)
+    return render_template('competition/add_new.html', form=form, isEdit=0)
 
 
 @competition_bp.route('/update/<name>/<date>', methods=['GET', 'POST'])
@@ -90,7 +90,7 @@ def update(name, date):
     else:
         flash("Pogrešno uneseni podaci")
 
-    return render_template('competition/single_view.html', form=form)
+    return render_template('competition/add_new.html', form=form, isEdit=1)
 
 
 @competition_bp.route('/results/upload/<name>/<date>', methods=['GET', 'POST'])
