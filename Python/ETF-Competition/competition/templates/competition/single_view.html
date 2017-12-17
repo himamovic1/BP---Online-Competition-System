@@ -6,11 +6,19 @@
 {% block content %}
     <div class="page-header row">
         <h1 class="col-xs-9 col-sm-10 m-0">Pregled detalja o takmičenju</h1>
+        {% if has_results==True %}
         <a href="{{ url_for('competition.show_stats', name=name, date=date) }}" class="btn btn-success col-xs-3 col-sm-2 m-0">Pregled statistike</a>
+        {% endif %}
     </div>
 
     <div class="row">
         <div class="col-sm-12">
+            {% if has_results==True %}
+            <div class="x_panel">
+                <h2>Objavljeni su rezultati takmičenja!</h2>
+                <a href="{{ url_for('competition.view_results', name=name, date=date) }}" class="btn btn-success">Pregled rezultata</a>
+            </div>
+            {% endif %}
             <div class="x_panel">
                 <div class="x_content">
                     {{ wtf.quick_form(form) }}

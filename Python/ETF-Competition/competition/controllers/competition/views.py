@@ -18,6 +18,14 @@ from competition.services.student import StudentService
 def list_one(name, date):
 	participations = StudentService.search_by_competition_participation(competition_name=name, competition_date=date)
 
+	results = CompetitionService.read_all_results(name=name, date=date)
+	res_count = len(results)
+
+	if res_count > 0:
+		has_results=True
+	else:
+		has_results=False
+
 	comp = CompetitionService.read(name, date)
 
 	if current_user.is_administrator():
@@ -29,7 +37,7 @@ def list_one(name, date):
 	form.put_competition(comp)
 	form.set_read_only_mode()
 	return render_template('competition/single_view.html', form=form, showParticipations=0,
-	                       participations=participations, name=comp.name, date=comp.date)
+	                       participations=participations, name=comp.name, date=comp.date, has_results=has_results)
 
 
 @competition_bp.route('/view/mine')
@@ -59,12 +67,12 @@ def show_stats(name, date):
 		flash("Nema rezultata takmičenja.")
 	else:
 		for result in results:
-			if result.points_scored >= 10:
+			if result[1].points_scored >= 10:
 				num_passed += 1
 			else:
 				num_failed += 1
 
-			res_dict[int(result.points_scored)] += 1
+			res_dict[int(result[1].points_scored)] += 1
 		p = num_passed/results_count*100
 
 	return render_template('competition/competition_statistics.html', res_dict=res_dict, results_count=results_count, passed=p, num_passed=num_passed, num_failed=num_failed)
@@ -159,6 +167,12 @@ def upload_results(name, date):
 	else:
 		comp = CompetitionService.read(name, date)
 		return render_template('competition/upload_results_view.html', comp=comp)
+
+
+@competition_bp.route('/results/view/<name>/<date>')
+def view_results(name, date):
+	results = CompetitionService.read_all_results(name=name, date=date)
+	return render_template('competition/view_results.html', results=results)
 
 
 @competition_bp.route('/delete/<name>/<date>')
