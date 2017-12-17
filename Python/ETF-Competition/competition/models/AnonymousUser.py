@@ -1,4 +1,4 @@
-from flask_login import AnonymousUserMixin, login_manager
+from flask_login import AnonymousUserMixin
 
 from competition import Permission
 
@@ -13,6 +13,3 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
-
-
-login_manager.anonymous_user = AnonymousUser

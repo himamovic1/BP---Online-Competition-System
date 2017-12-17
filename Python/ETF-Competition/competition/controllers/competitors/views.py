@@ -4,6 +4,7 @@ from werkzeug.utils import redirect
 
 from competition.controllers.competitors.forms import AddCompetitorForm
 from competition.controllers.competitors import competitors_bp
+from competition.decorators import admin_required
 
 from competition.services.participation import ParticipationService
 from competition.services.student import StudentService
@@ -11,6 +12,7 @@ from competition.services.student import StudentService
 
 @competitors_bp.route('/view/all')
 @login_required
+@admin_required
 def list_all():
     data = ParticipationService.read_all()
     return render_template('competitors/list.html', competitor_list=data)
@@ -18,6 +20,7 @@ def list_all():
 
 @competitors_bp.route('/add/new', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_new():
     form = AddCompetitorForm()
 
@@ -35,6 +38,7 @@ def add_new():
 
 @competitors_bp.route('/update/<id>', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def update(id):
     participation = ParticipationService.read(id=id)
     usr = StudentService.read(user_id=participation.user_id)

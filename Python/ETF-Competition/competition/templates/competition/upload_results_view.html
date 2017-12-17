@@ -20,6 +20,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <a href="{{ url_for('competition.submit_results', name=comp.name, date=comp.date) }}"
+                        class="btn btn-success">Učitaj rezultate</a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

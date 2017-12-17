@@ -7,8 +7,7 @@ from wtforms.validators import DataRequired, Regexp
 from competition import Competition, Administrator
 from competition.services.field import FieldService
 
-
-class CreateCompetitionForm(FlaskForm):
+class CompetitionFormBase(FlaskForm):
     editable = True
 
     name = StringField(
@@ -38,25 +37,11 @@ class CreateCompetitionForm(FlaskForm):
         get_label=lambda f: f.name
     )
 
-    ensemble = QuerySelectMultipleField(
-        'Administratori:',
-        validators=[DataRequired()],
-        get_pk=lambda f: f.id,
-        get_label=lambda f: "{} {}".format(f.name, f.surname)
-    )
-
-    submit = SubmitField('Kreiraj')
-
-    # Initialize fields with data available after startup
-    def initialize_fields(self):
-        self.ensemble.query_factory = Administrator.query.filter(Administrator.id != current_user.id).all
-
     # Fill form with a competition
     def put_competition(self, comp):
         self.name.data = comp.name
         self.date.data = comp.date
         self.subject.data = comp.field
-        self.ensemble.data = comp.owners
 
     # Create Competition object from form data
     def pop_competition(self):
@@ -70,7 +55,6 @@ class CreateCompetitionForm(FlaskForm):
             )
 
             comp.field = self.subject.data
-            comp.owners = self.ensemble.data
 
         return comp
 
@@ -80,7 +64,6 @@ class CreateCompetitionForm(FlaskForm):
         comp.date = self.date.data,
         comp.field_id = self.subject.data.id
         comp.field = self.subject.data
-        comp.owners = self.ensemble.data
 
     # Update the label according to te usage of form
     def set_create_mode(self):
@@ -96,3 +79,38 @@ class CreateCompetitionForm(FlaskForm):
 
         for field in self._fields.values():
             field.render_kw = dict(readonly='true', disabled='true')
+
+
+class CreateCompetitionForm(CompetitionFormBase):
+    ensemble = QuerySelectMultipleField(
+        'Administratori:',
+        validators=[DataRequired()],
+        get_pk=lambda f: f.id,
+        get_label=lambda f: "{} {}".format(f.name, f.surname)
+    )
+
+    submit = SubmitField('Kreiraj')
+
+    # Initialize fields with data available after startup
+    def initialize_fields(self):
+        self.ensemble.query_factory = Administrator.query.filter(Administrator.id != current_user.id).all
+
+    # Fill form with a competition
+    def put_competition(self, comp):
+        super(CreateCompetitionForm, self).put_competition(comp)
+        self.ensemble.data = comp.owners
+
+    # Create Competition object from form data
+    def pop_competition(self):
+        comp = super(CreateCompetitionForm, self).pop_competition()
+        comp.owners = self.ensemble.data
+        return comp
+
+    # Update competition object with new data
+    def refresh_competition(self, comp):
+        super(CreateCompetitionForm, self).refresh_competition(comp)
+        comp.owners = self.ensemble.data
+
+    def set_read_only_mode(self):
+        super(CreateCompetitionForm, self).set_read_only_mode()
+        self.submit.render_kw=dict(style="display:none;")

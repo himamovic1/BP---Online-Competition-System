@@ -41,7 +41,7 @@ class StudentService:
                 Student.index_number.ilike('%' + index.lower() + '%')
             )).all()
         else:
-            result = Student.filter(and_(
+            result = Student.query.filter(and_(
                 Student.name.ilike('%' + name.lower() + '%'),
                 Student.surname.ilike('%' + surname.lower() + '%'),
                 Student.index_number.ilike('%' + index.lower() + '%')
