@@ -1,10 +1,10 @@
 from flask import render_template, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 
 from competition.controllers.competitors.forms import AddCompetitorForm
 from competition.controllers.competitors import competitors_bp
-from competition.decorators import admin_required
+from competition.decorators import admin_required, student_required
 
 from competition.services.participation import ParticipationService
 from competition.services.student import StudentService
@@ -25,7 +25,8 @@ def add_new():
     form = AddCompetitorForm()
 
     if form.validate_on_submit():
-        comp = ParticipationService.create(form.name.data, form.surname.data, form.index_number.data, form.year.data, form.competition_date.data, form.competition_name.data)
+        comp = ParticipationService.create(form.name.data, form.surname.data, form.index_number.data, form.year.data,
+                                           form.competition_date.data, form.competition_name.data)
 
         if comp is None:
             flash('Nije moguće dodati takmičara.')
@@ -65,3 +66,44 @@ def update(id):
 #     CompetitionService.delete(name, date)
 #     flash('Uspješno ste obrisali takmičara')
 #     return list_all()
+
+@competitors_bp.route('/stats/fields', methods=['GET'])
+@competitors_bp.route('/stats/fields/<for_user>', methods=['GET'])
+@login_required
+def show_stats_by_field(for_user=None):
+    from competition import Competition, Result, Participation, Student, Field
+    from competition import db
+
+    from sqlalchemy.sql import label
+    from sqlalchemy import func, and_
+
+    if not for_user:
+        for_user = current_user.id
+
+    # Participates per field (Should be placed in pie chart)
+    ppf = db.session.query(Field.name, label('count', func.count(Participation.id))) \
+        .group_by(Field.id) \
+        .filter(Field.id == Competition.field_id) \
+        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
+        .filter(Participation.user_id == for_user) \
+        .all()
+
+    # Maximum points per field (Should be placed in bar chart)
+    mppf = db.session.query(Field.name, label('maximum', func.max(Result.points_scored))) \
+        .group_by(Field.id) \
+        .filter(Field.id == Competition.field_id) \
+        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
+        .filter(Participation.id == Result.participation_id) \
+        .filter(Participation.user_id == for_user) \
+        .all()
+
+    # Points scored in competitions grouped by fields
+    overall_score = db.session.query(Field.name, Competition.name, label('points', func.max(Result.points_scored))) \
+        .group_by(Field.id, Competition.name) \
+        .filter(Field.id == Competition.field_id) \
+        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
+        .filter(Participation.id == Result.participation_id) \
+        .filter(Participation.user_id == for_user) \
+        .all()
+
+    return render_template('competitors/stats.html', ppf=ppf, mppf=mppf, overall_score=overall_score)

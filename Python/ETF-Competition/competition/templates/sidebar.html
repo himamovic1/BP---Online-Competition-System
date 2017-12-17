@@ -48,12 +48,19 @@
                         </ul>
                     </li>
                     {% if is_admin(current_user) %}
-                    <li><a><i class="fa fa-desktop"></i>Takmičari<span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ url_for('competitors.list_all') }}">Pregled prijava</a></li>
-                            <li><a href="{{ url_for('competitors.add_new') }}">Dodaj novog takmičara</a></li>
-                        </ul>
-                    </li>
+                        <li><a><i class="fa fa-desktop"></i>Takmičari<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{{ url_for('competitors.list_all') }}">Pregled prijava</a></li>
+                                <li><a href="{{ url_for('competitors.add_new') }}">Dodaj novog takmičara</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_student(current_user) %}
+                        <li><a><i class="fa fa-desktop"></i>Statistika<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{{ url_for('competitors.show_stats_by_field') }}">Analiza po oblastima</a></li>
+                            </ul>
+                        </li>
                     {% endif %}
                 </ul>
             </div>

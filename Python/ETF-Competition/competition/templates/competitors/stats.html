@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Pregled statistike | ETF Competition{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Statistički podaci o takmičaru</h1>
+        <p>Broj prijava po oblasti <strong>{{ ppf|string }}</strong></p>
+        <p>Max broj bodova po oblasti <strong>{{ mppf|string }}</strong></p>
+        <p>Rezultati <strong>{{ overall_score }}</strong></p>
+    </div>
+{% endblock %}

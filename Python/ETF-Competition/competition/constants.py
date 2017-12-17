@@ -1,4 +1,4 @@
-from competition import User, Field, Competition, Student, Role, Administrator
+from competition import User, Field, Competition, Student, Role, Administrator, Result, Participation
 
 
 # Database seed method
@@ -63,8 +63,8 @@ def seed(database):
     # Competitions
     competitions = [
         Competition("Prvo takmičenje", "11.12.2018", 1),
-        Competition("Drugo takmičenje", "11.01.2018", 1),
-        Competition("Treće takmičenje", "01.12.2018", 1)
+        Competition("Drugo takmičenje", "11.01.2018", 2),
+        Competition("Treće takmičenje", "01.12.2018", 3)
     ]
 
     users[6].competitions.append(competitions[1])
@@ -73,3 +73,23 @@ def seed(database):
     data = fields + competitions + users
     for o in data:
         database.session.add(o)
+
+    database.session.flush()
+
+    users[1].participations.append(
+        Participation(user_id=users[1].id, competition_name=competitions[0].name, competition_date=competitions[0].date)
+    )
+    users[1].participations.append(
+        Participation(user_id=users[1].id, competition_name=competitions[1].name, competition_date=competitions[1].date)
+    )
+    users[1].participations.append(
+        Participation(user_id=users[1].id, competition_name=competitions[2].name, competition_date=competitions[2].date)
+    )
+
+    users[7].competitions.append(competitions[1])
+
+    database.session.flush()
+
+    data.append(Result(participation_id=0, points_scored=10))
+    data.append(Result(participation_id=1, points_scored=15))
+    data.append(Result(participation_id=2, points_scored=20))
