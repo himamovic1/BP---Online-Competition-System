@@ -4,13 +4,34 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Broj takmičara po broju bodova</h1>
+        <h1>Statistički podaci o takmičenju</h1>
     </div>
 
     <div class="row">
         <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_content">
+                    <div class="row">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ukupno takmičara</th>
+                                    <th>Položilo</th>
+                                    <th>Palo</th>
+	                                <th>Ukupna prolaznost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ results_count }}</td>
+                                    <td>{{ num_passed }}
+                                    <td>{{ num_failed}}</td>
+                                    <td>{{ passed }} %</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </div>
 					<div id='graph' class="col-xs-10 col-xs-push-1">
 					</div>
                 </div>
@@ -21,26 +42,72 @@
 
 
 {% block script %}
+{% if res_dict|length > 0 and results_count>0 %}
 <script type="text/javascript" src="https://cdn.zingchart.com/zingchart.min.js"></script>
 <script>
-
 		var chartData = {
 		      type: 'bar',
 		      title: {
-			        text: 'Broj takmičara po broju bodova'
+			        text: 'Procenat takmičara po broju bodova'
 		      },
-		      legend: {},
+		      "scale-y": {
+                "max-value": 100,
+                "label": {
+                  "text": "Procenat takmičara"
+                }
+              },
+              "scale-x": {
+                "max-value": 20,
+                "label": {
+                  "text": "Broj bodova"
+                },
+                "markers": [
+                  {
+                    "type": "line",
+                    "range": [10],
+                    "line-width": 3,
+                    "line-color": "green",
+                    "text": "Granica prolaznosti",
+                    "placement": "bottom",
+                    "label-placement": "normal",
+                    "label-alignment": "normal"
+                  }
+                ]
+              },
+		      legend: {
+		        "toggle-action": "hide",
+                "header": {
+                  "text": "Legenda"
+                },
+                "item": {
+                  "cursor": "pointer"
+                },
+                "draggable": true,
+                "drag-handler": "icon"
+              },
 		      series: [
 		          { values: [
-		            {% if res_dict|length > 0 and results_count>0 %}
-
-                            {% for i in range(21) %}
-
-                            {{ (res_dict[i]/results_count)|string + ',' }}
-
-                            {% endfor %}
-                     {% endif %}
-		          ]}
+                    {% for i in range(21) %}
+                        {% if i >= 10 %}
+                            {{ (res_dict[i]/results_count*100)|string + ',' }}
+                        {% else %}
+                            {{ '0,' }}
+                        {% endif %}
+                    {% endfor %}
+		            ],
+		            "text": "% takmičara sa ostvarenim brojem bodova (položili)"
+		          },
+                  { values: [
+                    {% for i in range(21) %}
+                        {% if i < 10 %}
+                            {{ (res_dict[i]/results_count*100)|string + ',' }}
+                        {% else %}
+                            {{ '0,' }}
+                        {% endif %}
+                    {% endfor %}
+		            ],
+		            "text": "% takmičara sa ostvarenim brojem bodova (nisu položili)"
+		          },
 		      ]
 	    };
 
@@ -48,8 +115,9 @@
 			id : 'graph',
 			data : chartData,
 			height: 500,
-			width: 725
+			width: 800
 		});
 
 </script>
+{% endif %}
 {% endblock %}

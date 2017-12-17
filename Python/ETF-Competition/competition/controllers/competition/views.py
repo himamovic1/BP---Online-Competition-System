@@ -50,16 +50,24 @@ def show_stats(name, date):
 	results = CompetitionService.read_all_results(name=name, date=date)
 	keys = [i for i in range(21)]
 	res_dict = dict.fromkeys(keys, 0)
-
+	num_passed = 0
+	num_failed = 0
+	p = 0
 	results_count = len(results)
 
 	if results_count == 0:
 		flash("Nema rezultata takmičenja.")
 	else:
 		for result in results:
-			res_dict[int(result.points_scored)] += 1
+			if result.points_scored >= 10:
+				num_passed += 1
+			else:
+				num_failed += 1
 
-	return render_template('competition/competition_statistics.html', res_dict=res_dict, results_count=results_count)
+			res_dict[int(result.points_scored)] += 1
+		p = num_passed/results_count*100
+
+	return render_template('competition/competition_statistics.html', res_dict=res_dict, results_count=results_count, passed=p, num_passed=num_passed, num_failed=num_failed)
 
 
 #################################################
