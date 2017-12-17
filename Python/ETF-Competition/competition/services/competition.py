@@ -43,12 +43,15 @@ class CompetitionService:
             user = Administrator.query.filter_by(user_id=current_user.id).first()
             return user.competitions
         else:
-            # p = Participation.query.filter_by(user_id=current_user.id).all()
-            c = Competition.query.filter(Competition.name == Participation.competition_name) \
+            return Competition.query.filter(Competition.name == Participation.competition_name) \
                 .filter(Competition.date == Participation.competition_date) \
                 .filter(Participation.user_id == current_user.id).all()
 
-            return c
+    @staticmethod
+    def read_all_results(name, date):
+        return Result.query.filter(Result.participation_id == Participation.id)\
+        .filter(Participation.competition_name == name)\
+        .filter(Participation.competition_date == date).all()
 
     @staticmethod
     def update(comp, comp_form, commit=False):

@@ -43,3 +43,7 @@ blockquote > p {
 .page-header {
 	margin: 20px 0;
 }
+
+.zc-ref {
+  display: none;
+}
