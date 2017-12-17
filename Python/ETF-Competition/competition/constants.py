@@ -27,6 +27,14 @@ def seed(database):
     s3.password = 'student'
     users.append(s3)
 
+    s4 = Student(name='Jolly', surname='Foster', email='jolly@test.com', index_number='10003', study_year=1)
+    s4.password = 'student'
+    users.append(s4)
+
+    s5 = Student(name='Mike', surname='Young', email='mike@test.com', index_number='10004', study_year=1)
+    s5.password = 'student'
+    users.append(s5)
+
     a1 = Administrator(name='Some', surname='Body', email='once@told.me', position='Assistent')
     a1.password = 'admin'
     users.append(a1)
@@ -59,9 +67,10 @@ def seed(database):
         Competition("Treće takmičenje", "01.12.2018", 3)
     ]
 
+    users[6].competitions.append(competitions[1])
+
     # Seeding the data to db session
     data = fields + competitions + users
-
     for o in data:
         database.session.add(o)
 
@@ -76,7 +85,8 @@ def seed(database):
     users[1].participations.append(
         Participation(user_id=users[1].id, competition_name=competitions[2].name, competition_date=competitions[2].date)
     )
-    users[4].competitions.append(competitions[1])
+
+    users[7].competitions.append(competitions[1])
 
     database.session.flush()
 

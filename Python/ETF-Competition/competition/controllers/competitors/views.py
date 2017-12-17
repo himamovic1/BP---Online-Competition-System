@@ -68,19 +68,24 @@ def update(id):
 #     return list_all()
 
 @competitors_bp.route('/stats/fields', methods=['GET'])
+@competitors_bp.route('/stats/fields/<for_user>', methods=['GET'])
 @login_required
-def show_stats_by_field():
+def show_stats_by_field(for_user=None):
     from competition import Competition, Result, Participation, Student, Field
     from competition import db
 
     from sqlalchemy.sql import label
     from sqlalchemy import func, and_
 
+    if not for_user:
+        for_user = current_user.id
+
     # Participates per field (Should be placed in pie chart)
     ppf = db.session.query(Field.name, label('count', func.count(Participation.id))) \
         .group_by(Field.id) \
         .filter(Field.id == Competition.field_id) \
         .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
+        .filter(Participation.user_id == for_user) \
         .all()
 
     # Maximum points per field (Should be placed in bar chart)
@@ -89,6 +94,7 @@ def show_stats_by_field():
         .filter(Field.id == Competition.field_id) \
         .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
         .filter(Participation.id == Result.participation_id) \
+        .filter(Participation.user_id == for_user) \
         .all()
 
     # Points scored in competitions grouped by fields
@@ -97,9 +103,7 @@ def show_stats_by_field():
         .filter(Field.id == Competition.field_id) \
         .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
         .filter(Participation.id == Result.participation_id) \
+        .filter(Participation.user_id == for_user) \
         .all()
 
-    print('hehe')
-
-
-
+    return render_template('competitors/stats.html', ppf=ppf, mppf=mppf, overall_score=overall_score)

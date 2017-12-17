@@ -49,8 +49,9 @@ class CompetitionService:
 
     @staticmethod
     def read_all_results(name, date):
-        return Result.query.filter(Result.participation_id == Participation.id)\
-        .filter(Participation.competition_name == name)\
+        return db.session.query(Student, Result).filter(Result.participation_id == Participation.id) \
+            .filter(Participation.user_id == Student.user_id) \
+            .filter(Participation.competition_name == name)\
         .filter(Participation.competition_date == date).all()
 
     @staticmethod
