@@ -15,6 +15,7 @@ class Competition(db.Model):
     # field = relationship("Field", backref=db.backref("competition"), uselist=False)
     questions = relationship("Question")
     owners = relationship('Administrator', secondary=Ownership, backref='competition')
+    participations = relationship('Participation')
 
     def __init__(self, name, date, field_id):
         self.name = name

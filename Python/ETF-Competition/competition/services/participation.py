@@ -17,6 +17,19 @@ class ParticipationService:
         return participation
 
     @staticmethod
+    def sign_up(user_id, comp_name, comp_date, commit=False):
+        participation = Participation(user_id=user_id,
+                                      competition_name=comp_name,
+                                      competition_date=comp_date)
+
+        db.session.add(participation)
+
+        if commit:
+            db.session.commit()
+
+        return participation
+
+    @staticmethod
     def read(id):
         return Participation.query.filter_by(id=id).first()
 

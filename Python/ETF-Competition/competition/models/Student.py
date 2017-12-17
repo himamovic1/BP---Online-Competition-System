@@ -12,7 +12,7 @@ class Student(User):
     user_id = db.Column(db.Integer, ForeignKey("user.id"), primary_key=True)
     index_number = db.Column(db.String(255), unique=True, nullable=False)
     study_year = db.Column(db.Integer, nullable=False)
-    competitions = relationship("Competition", secondary=Participation, backref='student')
+    participations = relationship("Participation")
 
     __mapper_args__ = {
         'polymorphic_identity': 'student',
