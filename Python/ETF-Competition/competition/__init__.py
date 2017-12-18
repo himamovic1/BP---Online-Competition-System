@@ -76,6 +76,13 @@ def register_blueprints(app):
 def register_globals(app):
     """ Register globally (including templates) available variables and functions. """
 
+    def get_random_color():
+        import random
+        r = lambda: random.randint(0, 255)
+        return '#%02X%02X%02X' % (r(), r(), r())
+
+    app.jinja_env.globals.update(get_random_color=get_random_color)
+
     @app.context_processor
     def inject_permission_check():
         from flask_login import AnonymousUserMixin

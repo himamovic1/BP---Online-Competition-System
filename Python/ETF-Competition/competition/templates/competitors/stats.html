@@ -4,9 +4,201 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Statistički podaci o takmičaru</h1>
-        <p>Broj prijava po oblasti <strong>{{ ppf|string }}</strong></p>
-        <p>Max broj bodova po oblasti <strong>{{ mppf|string }}</strong></p>
-        <p>Rezultati <strong>{{ overall_score }}</strong></p>
+        <h1>Statistički podaci sa takmičenja</h1>
     </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Opći uspjeh
+                        <small></small>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Naziv takmičenja</th>
+                                <th>Oblast</th>
+                                <th>Broj ostvarenih bodova</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if overall_score|length > 0 %}
+                            {% for s in overall_score %}
+                            <tr>
+                                <td>{{ s[1] }}</td>
+                                <td>{{ s[0] }}
+                                <td>{{ s[2]}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                Nema takmičenja
+                            </td>
+                        </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Grafički prikaz
+                        <small></small>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id='ppf_chart' class="col-xs-10 col-xs-push-1"></div>
+                    <div id='mppf_chart' class="col-xs-10 col-xs-push-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+
+{% if ppf|length > 0 %}
+<script type="text/javascript">
+       var ppfChartData = {
+            type: "pie",
+            backgroundColor: "#fff",
+            plot: {
+              borderColor: "#fff",
+              borderWidth: 5,
+              // slice: 90,
+              valueBox: {
+                placement: 'out',
+                text: '%t\n%npv%',
+                fontFamily: "Open Sans"
+              },
+              tooltip:{
+                fontSize: '18',
+                fontFamily: "Open Sans",
+                padding: "5 10",
+                text: "%npv%"
+              },
+              animation:{
+                  effect: 2,
+                  method: 5,
+                  speed: 500,
+                  sequence: 1
+              }
+            },
+            title: {
+              fontColor: "#55575b",
+              text: 'Broj prijava po takmičenjima',
+              align: "center",
+              offsetX: 10,
+              fontFamily: "Open Sans",
+              fontSize: 25
+            },
+            subtitle: {
+              offsetX: 10,
+              offsetY: 10,
+              fontColor: "#8e99a9",
+              fontFamily: "Open Sans",
+              fontSize: "16",
+              text: 'Godina: 2017',
+              align: "center"
+            },
+            plotarea: {
+              margin: "20 0 0 0"
+            },
+            series : [
+                {% for p in ppf %}
+                  { values: [{{p[1]}}],
+                    text: "{{p[0]}}",
+                    backgroundColor: '{{ get_random_color() }}'
+                  },
+                {% endfor %}
+            ]
+        };
+		zingchart.render({
+			id : 'ppf_chart',
+			data : ppfChartData,
+			height: 520,
+			width: 760
+		});
+</script>
+{% endif %}
+
+{% if mppf|length > 0 %}
+    <script type="text/javascript">
+
+        var mppfChartData = {
+		      type: 'bar',
+		      plot: {
+                  animation:{
+                      effect: 2,
+                      method: 5,
+                      speed: 500,
+                      sequence: 1
+                  }
+              },
+		      title: {
+		          fontColor: "#55575b",
+                  text: 'Maksimalan broj ostvarenih poena po oblastima',
+                  align: "center",
+                  offsetX: 10,
+                  fontFamily: "Open Sans",
+                  fontSize: 25
+		      },
+		      "scale-y": {
+                "label": {
+                  "text": "Broj ostvarenih bodova"
+                }
+              },
+              "scale-x": {
+                "labels": [
+                    {% for p in mppf %}
+                        '{{p[0]}}',
+                    {% endfor %}
+                ],
+                "label": {
+                  "text": "Oblast"
+                }
+              },
+		      legend: {
+		        "toggle-action": "hide",
+                "header": {
+                  "text": "Legenda"
+                },
+                "item": {
+                  "cursor": "pointer"
+                },
+                "draggable": true,
+                "drag-handler": "icon"
+              },
+		      series: [
+		          { values: [
+                    {% for p in mppf %}
+                        {{p[1]}},
+                    {% endfor %}
+		            ],
+		            "text": "Broj ostvarenih bodova"
+		          }
+		      ]
+	    };
+
+		zingchart.render({
+			id : 'mppf_chart',
+			data : mppfChartData,
+			height: 520,
+			width: 760
+		});
+</script>
+{% endif %}
 {% endblock %}
