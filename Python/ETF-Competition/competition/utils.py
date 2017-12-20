@@ -8,3 +8,7 @@ class Permission:
     MODIFY_COMPETITION = 0x02
     CREATE_RESULTS = 0x04
     VIEW_RESULTS = 4
+
+def send_email(sender, recipients, subject, template, **kwargs):
+    from flask_mail import Message
+    msg = Message()

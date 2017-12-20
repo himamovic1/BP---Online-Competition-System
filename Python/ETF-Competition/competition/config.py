@@ -9,11 +9,16 @@ class Config:
     #     "etfdb": "oracle://BP03:o3tUtwdn@80.65.65.66/etflab"
     # }
 
+    SECRET_KEY = "so secret much wow"
+    ASSETS_DEBUG = True
+
+    # Email related settings
+    MAIL_SUBJECT_PREFIX = "ETF Competition"
+    MAIL_SENDER = "ETF Admin <some.email@etf.unsa.ba>"
+
     @staticmethod
     def init_app(app):
         pass
-
-    ASSETS_DEBUG = True
 
 
 class DevelopmentConfig(Config):

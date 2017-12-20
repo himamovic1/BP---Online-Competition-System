@@ -1,9 +1,9 @@
 from flask import render_template, redirect, request, url_for, flash
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_required
+from wtforms import ValidationError
 
-from competition import User
 from competition.controllers.auth import auth_bp
-from competition.controllers.auth.forms import LoginForm
+from competition.controllers.auth.forms import LoginForm, RegistrationForm
 from competition.services.auth import AuthService
 
 
@@ -19,6 +19,26 @@ def login():
 
     return render_template('auth/login.html', form=login_form)
 
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    register_form = RegistrationForm()
+
+    try:
+        if register_form.validate_on_submit() and register_form.validate_email():
+            new_student = register_form.create_student()
+            AuthService.register_student(new_student)
+            flash('Aktivacijski mail poslan na Vašu adresu', category='success')
+            return redirect(url_for('public.index'))
+
+        elif request.method == 'POST':
+            flash('Greška pri unosu podataka', category='error')
+
+    except ValidationError as ve:
+        flash('Pogrešno uneseni podaci: {}'.format(ve), category='error')
+    except Exception as e:
+        flash('Došlo je do greške', category='error')
+
+    return render_template('auth/registration.html')
 
 @auth_bp.route('/logout')
 @login_required

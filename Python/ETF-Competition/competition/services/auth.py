@@ -1,6 +1,6 @@
 from flask_login import login_user, logout_user
 
-from competition import User, Student, Administrator
+from competition import User, Student, Administrator, db
 
 
 class AuthService:
@@ -20,5 +20,16 @@ class AuthService:
         return False
 
     @staticmethod
+    def register_student(new_student, commit=False):
+        db.session.add(new_student)
+
+        if commit:
+            db.session.commit()
+
+    @staticmethod
     def logout():
         logout_user()
+
+    @staticmethod
+    def send_activation_email(user):
+        send_email(user.email, 'Aktivacija profila', 'auth/email/confirmation', user=user)
