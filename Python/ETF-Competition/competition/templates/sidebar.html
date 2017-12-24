@@ -32,6 +32,13 @@
                             <i class="fa fa-home"></i> Početna
                         </a>
                     </li>
+                    {% if current_user.is_anonymous %}
+                        <li>
+                            <a href="{{ url_for('auth.register') }}" class="m-0">
+                                <i class="fa fa-sign-in"></i> Registracija
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a>
                             <i class="fa fa-edit"></i>Takmičenja<span class="fa fa-chevron-down"></span>

@@ -10,13 +10,10 @@
         <p class="text-light">Dobro došli na ETF-competition Elektrotehničkog fakulteta Sarajevo</p>
     </div>
 
-    <!-- Login Form -->
+    <!-- Registration Form -->
     <div class="d-row" id="login-form-container">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             {{ wtf.quick_form(form) }}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h5 class="label label-danger p-2">Nemaš korisnički profil?&nbsp;<a href="{{ url_for('auth.register') }}">Registruj se</a></h5>
         </div>
     </div>
 </div>
