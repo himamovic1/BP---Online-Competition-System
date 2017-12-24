@@ -16,6 +16,13 @@ Repository for a semestral project
 - PgAdmin 4
 
 ## How To
+### Configure mail:
+Prije pokretanja PyCharm-a dodati dvije environment varijable sa naredbama:
+- SETX ETF_FLASK_MAIL_USERNAME <place your email here>
+- SETX ETF_FLASK_MAIL_MAGIC_WORD <place your email pw here>
+  
+ U zavisnosti od mail-a koji koristite možda će biti potrebno promijeniti neke postavke u samom mail clientu
+ 
 ### Server side:
   - Create a dedicated virtual environment (To be explained later)
   - Navigate to project root directory and run: ```pip install -r requirements\dev.txt" command.```
