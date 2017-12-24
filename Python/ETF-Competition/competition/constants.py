@@ -22,22 +22,22 @@ def seed(database):
 
     s2 = Student(name='Demo', surname='User', email='demo@test.com', index_number='10001', study_year=2)
     s2.password = "demo"
-    s1.confirmed = True
+    s2.confirmed = True
     users.append(s2)
 
     s3 = Student(name='Mary', surname='Lilly', email='mary@test.com', index_number='10002', study_year=1)
     s3.password = 'student'
-    s1.confirmed = True
+    s3.confirmed = True
     users.append(s3)
 
     s4 = Student(name='Jolly', surname='Foster', email='jolly@test.com', index_number='10003', study_year=1)
     s4.password = 'student'
-    s1.confirmed = True
+    s4.confirmed = True
     users.append(s4)
 
     s5 = Student(name='Mike', surname='Young', email='mike@test.com', index_number='10004', study_year=1)
     s5.password = 'student'
-    s1.confirmed = True
+    s5.confirmed = True
     users.append(s5)
 
     a1 = Administrator(name='Some', surname='Body', email='once@told.me', position='Assistent')
