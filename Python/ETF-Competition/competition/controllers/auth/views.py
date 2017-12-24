@@ -9,15 +9,16 @@ from competition.services.auth import AuthService
 @auth_bp.before_app_request
 def before_request():
     from competition.utils import redirect_unconfirmed
-    redirected = redirect_unconfirmed(current_user,
-                                      allowed_endpoints=['auth.login',
-                                                         'auth.logout',
-                                                         'auth.unconfirmed',
-                                                         'auth.confirm',
-                                                         'auth.resend'])
 
-    if redirected:
-        return redirected
+    if getattr(current_user, 'confirmed', False):
+        redirected = redirect_unconfirmed(current_user,
+                                          allowed_endpoints=['auth.login',
+                                                             'auth.logout',
+                                                             'auth.unconfirmed',
+                                                             'auth.confirm',
+                                                             'auth.resend'])
+        if redirected:
+            return redirected
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
