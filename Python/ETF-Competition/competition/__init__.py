@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_dropzone import Dropzone
 from flask_login import LoginManager
@@ -13,6 +14,7 @@ from .config import config as app_config
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
+mail = Mail()
 dropzone = Dropzone()
 
 # Import models - this has to be after "db = SQLAlchemy()" line
@@ -56,6 +58,7 @@ def register_extensions(app):
     assets.init_app(app)
     login_manager.init_app(app)
     dropzone.init_app(app)
+    mail.init_app(app)
 
 
 def register_blueprints(app):
@@ -96,9 +99,15 @@ def register_globals(app):
                    and usr.can(Permission.STUDENT_ACCESS) \
                    and not is_admin(usr)
 
+        def is_confirmed(usr):
+            return type(usr) is not AnonymousUserMixin \
+                   and usr.can(Permission.STUDENT_UNCONFIRMED_ACCESS) \
+                   and not is_admin(usr)
+
         return dict(
             permission=Permission,
             is_student=is_student,
+            is_confirmed=is_confirmed,
             is_admin=is_admin
         )
 

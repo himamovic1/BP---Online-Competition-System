@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Aktivacija | ETF Competition{% endblock %}
+
+{% block content %}
+<div class="col-xs-12 text-center">
+    <div class="page-header">
+        <h1 class="text-uppercase text-dark">Aktivacija korisničkog računa</h1>
+        <p class="text-light">Niste aktivirali svoj korisnički račun</p>
+    </div>
+
+    <div class="d-row" id="login-form-container">
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <h5>
+                Potrebno je da aktivirate korinički račun putem aktivacijskog linka koji je poslan na Vašu email adresu.
+                Ukoliko niste dobili mail kliknite na naredni link kako bismo Vam ponovno poslali aktivacijski email.
+            </h5>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <h4 class="label label-info"><a href="{{ url_for('auth.resend') }}">Pošalji ponovno</a></h4>
+        </div>
+    </div>
+</div>
+{% endblock %}

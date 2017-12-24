@@ -48,7 +48,7 @@ class Student(User):
         except:
             return False
 
-        if data.get('confrim') != self.user_id:
+        if data.get('confirm') != self.user_id:
             return False
 
         self.confirmed = True
