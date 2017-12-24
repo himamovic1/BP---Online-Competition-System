@@ -18,8 +18,8 @@ Repository for a semestral project
 ## How To
 ### Configure mail:
 Prije pokretanja PyCharm-a dodati dvije environment varijable sa naredbama:
-- SETX ETF_FLASK_MAIL_USERNAME <place your email here>
-- SETX ETF_FLASK_MAIL_MAGIC_WORD <place your email pw here>
+- SETX ETF_FLASK_MAIL_USERNAME "place your email here"
+- SETX ETF_FLASK_MAIL_MAGIC_WORD "place your email pw here"
   
  U zavisnosti od mail-a koji koristite možda će biti potrebno promijeniti neke postavke u samom mail clientu
  
