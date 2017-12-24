@@ -21,6 +21,7 @@ Prije pokretanja PyCharm-a dodati dvije environment varijable sa naredbama:
 - SETX ETF_FLASK_MAIL_USERNAME "place your email here"
 - SETX ETF_FLASK_MAIL_MAGIC_WORD "place your email pw here"
   
+ Ako korisnite linux zamijenite export umjesto SETX. 
  U zavisnosti od mail-a koji koristite možda će biti potrebno promijeniti neke postavke u samom mail clientu
  
 ### Server side:
