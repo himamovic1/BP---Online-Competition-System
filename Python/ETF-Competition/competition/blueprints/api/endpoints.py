@@ -6,6 +6,7 @@ from competition import User
 from competition.services.student import StudentService
 from . import api as api_blueprint
 from competition.services.competition import CompetitionService
+from competition.services.auth import AuthService
 
 # API test endpoints
 @api_blueprint.route('/<int:number>')
@@ -14,21 +15,23 @@ def api_test(number):
     response.status_code = 200
     return response
 
-@api_blueprint.route('/search/competition/<string:search_query>')
-def search_competition(search_query):
+@api_blueprint.route('/search/competition')
+def search_competition():
+    search_query = name = request.args.get('name')
     competitions = CompetitionService.search(search_query)
 
-    response = {}
+    response = []
     response_len = len(competitions)
 
     for i in range(response_len):
         field = competitions[i].field.name
         d = competitions[i].date
-
-        response[i] = competitions[i].as_dict()
-
-        response[i]["field"] = field
-        response[i]["date"] = d.strftime("%Y-%m-%d %H:%M:%S")
+        response.append({
+            'field': field,
+            'date': d.strftime("%Y-%m-%d %H:%M:%S"),
+            'name': competitions[i].name,
+            'field_id': competitions[i].field_id
+        })
 
     response = jsonify(response)
     response.status_code = 200
@@ -56,3 +59,12 @@ def search_students():
     response.status_code = 200
 
     return response
+
+@api_blueprint.route('/login', methods = ['POST'])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+    if AuthService.login(email, password):
+        return jsonify({"is_loggedin": True});
+    else:
+        return jsonify({"is_loggedin": False});

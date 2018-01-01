@@ -12,6 +12,8 @@ class AuthService:
 
         # Get the user
         user = User.query.filter_by(email=email).first()
+        if user is None:
+            return False
 
         check_password = True
         if not _internal:
