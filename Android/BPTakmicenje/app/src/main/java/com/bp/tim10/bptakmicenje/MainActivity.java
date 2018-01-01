@@ -83,14 +83,14 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_takmicari) {
 
-            Takmicari takmicari = new Takmicari();
+            Takmicenja takmicenja = new Takmicenja();
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_takmicari, takmicari).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_takmicenja, takmicenja).commit();
 
         } else if (id == R.id.nav_takmicenja) {
-            Takmicari takmicari = new Takmicari();
+            Takmicenja takmicenja = new Takmicenja();
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_takmicari, takmicari).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_takmicenja, takmicenja).commit();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

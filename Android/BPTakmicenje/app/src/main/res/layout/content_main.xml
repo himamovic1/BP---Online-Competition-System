@@ -8,10 +8,10 @@
     tools:context="com.bp.tim10.bptakmicenje.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    
-    
+
+
     <FrameLayout
-        android:id="@+id/fragment_takmicari"
+        android:id="@+id/fragment_takmicenja"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
 </RelativeLayout>

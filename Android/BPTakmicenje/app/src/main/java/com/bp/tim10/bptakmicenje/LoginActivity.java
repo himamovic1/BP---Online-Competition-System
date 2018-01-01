@@ -34,6 +34,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.widget.Toast;
+import retrofit2.*;
+import retrofit2.converter.gson.*;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -88,10 +92,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent int1= new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(int1);
-                attemptLogin();
+                AutoCompleteTextView mEmail   = (AutoCompleteTextView)findViewById(R.id.email);
+                EditText mPassword = (EditText)findViewById(R.id.password);
 
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://10.0.2.2:5000/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                EtfCompetitionRestClient service = retrofit.create(EtfCompetitionRestClient.class);
+                Call<LoginResponse> login = service.login(email, password);
+                login.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        LoginResponse r = response.body();
+                        if (r.is_loggedin) {
+                            Intent int1= new Intent(LoginActivity.this,MainActivity.class);
+                            startActivity(int1);
+                            attemptLogin();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Pogrešan email ili password.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        call.cancel();
+                        Toast.makeText(getApplicationContext(), "Network error.", Toast.LENGTH_LONG).show();
+                    }
+
+                });
             }
         });
 
