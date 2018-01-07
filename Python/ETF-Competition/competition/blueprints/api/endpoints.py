@@ -60,7 +60,7 @@ def get_results(name, date):
     return response
 
 
-@api_blueprint.route('/competitors/stats/ppc/<string:email>')
+@api_blueprint.route('/competitors/stats/overall/<string:email>')
 def get_ppc(email):
     usr = User.query.filter_by(email=email).first()
     stats = CompetitionService.competitor_overall_score(usr.id)
