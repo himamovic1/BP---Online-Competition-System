@@ -38,6 +38,27 @@ def search_competition():
 
     return response
 
+@api_blueprint.route('/competition/results/<string:name>/<string:date>')
+def get_results(name, date):
+    results = CompetitionService.read_all_results(name=name, date=date)
+
+    response = []
+    response_len = len(results)
+
+    for i in range(response_len):
+        index_num = results[i][0].index_number
+        points_scored = results[i][1].points_scored
+
+        response.append({
+            'index_number': index_num,
+            'points_scored': points_scored
+        })
+
+    response = jsonify(response)
+    response.status_code = 200
+
+    return response
+
 
 @api_blueprint.route('/search/student')
 def search_students():

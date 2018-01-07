@@ -201,3 +201,5 @@ def sign_up(name, date):
     else:
         flash('Greška prilikom prijave', 'warning')
         return redirect(url_for('competition.list_all'))
+
+
