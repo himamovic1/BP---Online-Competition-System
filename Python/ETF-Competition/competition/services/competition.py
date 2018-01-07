@@ -2,8 +2,10 @@ import os
 from pathlib import Path
 
 from flask_login import current_user
+from sqlalchemy import func, and_
+from sqlalchemy.sql import label
 
-from competition import Competition, db, Administrator, Result, Participation, Student
+from competition import Competition, db, Administrator, Result, Participation, Student, Field
 
 
 class CompetitionService:
@@ -117,3 +119,34 @@ class CompetitionService:
         except Exception:
             db.session.rollback()
             raise Exception('Greška prilikom učitavanja rezultata.')
+
+    @staticmethod
+    def competitor_overall_score(user_id):
+        return db.session.query(Field.name, Competition.name, label('points', func.max(Result.points_scored))) \
+            .group_by(Field.id, Competition.name) \
+            .filter(Field.id == Competition.field_id) \
+            .filter(and_(Competition.name == Participation.competition_name,
+                         Competition.date == Participation.competition_date)) \
+            .filter(Participation.id == Result.participation_id) \
+            .filter(Participation.user_id == user_id) \
+            .all()
+
+    @staticmethod
+    def points_per_competition(user_id):
+        return db.session.query(Field.name, label('count', func.count(Participation.id))) \
+            .group_by(Field.id) \
+            .filter(Field.id == Competition.field_id) \
+            .filter(and_(Competition.name == Participation.competition_name,
+                         Competition.date == Participation.competition_date)) \
+            .filter(Participation.user_id == user_id) \
+            .all()
+
+    @staticmethod
+    def max_points_per_field(user_id):
+        return db.session.query(Field.name, label('maximum', func.max(Result.points_scored))) \
+        .group_by(Field.id) \
+        .filter(Field.id == Competition.field_id) \
+        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
+        .filter(Participation.id == Result.participation_id) \
+        .filter(Participation.user_id == user_id) \
+        .all()

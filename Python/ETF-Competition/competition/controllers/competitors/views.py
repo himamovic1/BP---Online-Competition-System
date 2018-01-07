@@ -5,6 +5,7 @@ from werkzeug.utils import redirect
 from competition.controllers.competitors.forms import AddCompetitorForm
 from competition.controllers.competitors import competitors_bp
 from competition.decorators import admin_required, student_required
+from competition.services.competition import CompetitionService
 
 from competition.services.participation import ParticipationService
 from competition.services.student import StudentService
@@ -81,29 +82,12 @@ def show_stats_by_field(for_user=None):
         for_user = current_user.id
 
     # Participates per field (Should be placed in pie chart)
-    ppf = db.session.query(Field.name, label('count', func.count(Participation.id))) \
-        .group_by(Field.id) \
-        .filter(Field.id == Competition.field_id) \
-        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
-        .filter(Participation.user_id == for_user) \
-        .all()
+    ppf = CompetitionService.points_per_competition(user_id=for_user)
 
     # Maximum points per field (Should be placed in bar chart)
-    mppf = db.session.query(Field.name, label('maximum', func.max(Result.points_scored))) \
-        .group_by(Field.id) \
-        .filter(Field.id == Competition.field_id) \
-        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
-        .filter(Participation.id == Result.participation_id) \
-        .filter(Participation.user_id == for_user) \
-        .all()
+    mppf = CompetitionService.max_points_per_field(user_id=for_user)
 
     # Points scored in competitions grouped by fields
-    overall_score = db.session.query(Field.name, Competition.name, label('points', func.max(Result.points_scored))) \
-        .group_by(Field.id, Competition.name) \
-        .filter(Field.id == Competition.field_id) \
-        .filter(and_(Competition.name == Participation.competition_name, Competition.date == Participation.competition_date)) \
-        .filter(Participation.id == Result.participation_id) \
-        .filter(Participation.user_id == for_user) \
-        .all()
+    overall_score = CompetitionService.competitor_overall_score(user_id=for_user)
 
     return render_template('competitors/stats.html', ppf=ppf, mppf=mppf, overall_score=overall_score)

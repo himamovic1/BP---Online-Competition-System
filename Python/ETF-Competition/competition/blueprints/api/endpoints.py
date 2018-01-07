@@ -60,6 +60,27 @@ def get_results(name, date):
     return response
 
 
+@api_blueprint.route('/competitors/stats/ppc/<string:email>')
+def get_ppc(email):
+    usr = User.query.filter_by(email=email).first()
+    stats = CompetitionService.competitor_overall_score(usr.id)
+
+    response = []
+
+    for s in stats:
+
+        response.append({
+            'competition_field': s[0],
+            'competition_name': s[1],
+            'points_scored': s[2]
+        })
+
+    response = jsonify(response)
+    response.status_code = 200
+
+    return response
+
+
 @api_blueprint.route('/search/student')
 def search_students():
     name = request.args.get('name')
