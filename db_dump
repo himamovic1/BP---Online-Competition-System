@@ -1,0 +1,831 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.5
+-- Dumped by pg_dump version 9.6.5
+
+-- Started on 2018-01-13 18:12:27
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2232 (class 1262 OID 16437)
+-- Name: etf_competition; Type: DATABASE; Schema: -; Owner: dbadmin
+--
+
+CREATE DATABASE etf_competition WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'English_United States.1252' LC_CTYPE = 'English_United States.1252';
+
+
+ALTER DATABASE etf_competition OWNER TO dbadmin;
+
+\connect etf_competition
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12387)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2234 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 195 (class 1259 OID 42718)
+-- Name: administrator; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE administrator (
+    user_id integer NOT NULL,
+    "position" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE administrator OWNER TO dbadmin;
+
+--
+-- TOC entry 189 (class 1259 OID 42661)
+-- Name: competition; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE competition (
+    name character varying(255) NOT NULL,
+    date timestamp without time zone NOT NULL,
+    field_id integer
+);
+
+
+ALTER TABLE competition OWNER TO dbadmin;
+
+--
+-- TOC entry 188 (class 1259 OID 42653)
+-- Name: field; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE field (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE field OWNER TO dbadmin;
+
+--
+-- TOC entry 187 (class 1259 OID 42651)
+-- Name: field_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE field_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE field_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2235 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: field_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE field_id_seq OWNED BY field.id;
+
+
+--
+-- TOC entry 197 (class 1259 OID 42730)
+-- Name: ownership; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE ownership (
+    id integer NOT NULL,
+    user_id integer,
+    competition_name character varying(255),
+    competition_date timestamp without time zone
+);
+
+
+ALTER TABLE ownership OWNER TO dbadmin;
+
+--
+-- TOC entry 196 (class 1259 OID 42728)
+-- Name: ownership_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE ownership_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ownership_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2236 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: ownership_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE ownership_id_seq OWNED BY ownership.id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 42748)
+-- Name: participation; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE participation (
+    id integer NOT NULL,
+    user_id integer,
+    competition_name character varying(255),
+    competition_date timestamp without time zone
+);
+
+
+ALTER TABLE participation OWNER TO dbadmin;
+
+--
+-- TOC entry 198 (class 1259 OID 42746)
+-- Name: participation_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE participation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE participation_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2237 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: participation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE participation_id_seq OWNED BY participation.id;
+
+
+--
+-- TOC entry 193 (class 1259 OID 42692)
+-- Name: question; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE question (
+    id integer NOT NULL,
+    text character varying(1024) NOT NULL,
+    ordinal_number integer NOT NULL,
+    max_score double precision NOT NULL,
+    competition_name character varying(255),
+    competition_date timestamp without time zone
+);
+
+
+ALTER TABLE question OWNER TO dbadmin;
+
+--
+-- TOC entry 192 (class 1259 OID 42690)
+-- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE question_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE question_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2238 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE question_id_seq OWNED BY question.id;
+
+
+--
+-- TOC entry 200 (class 1259 OID 42764)
+-- Name: result; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE result (
+    participation_id integer NOT NULL,
+    points_scored double precision NOT NULL
+);
+
+
+ALTER TABLE result OWNER TO dbadmin;
+
+--
+-- TOC entry 186 (class 1259 OID 42642)
+-- Name: roles; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE roles (
+    id integer NOT NULL,
+    name character varying(64),
+    "default" boolean,
+    permissions integer
+);
+
+
+ALTER TABLE roles OWNER TO dbadmin;
+
+--
+-- TOC entry 185 (class 1259 OID 42640)
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE roles_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2239 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+
+
+--
+-- TOC entry 194 (class 1259 OID 42706)
+-- Name: student; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE student (
+    user_id integer NOT NULL,
+    index_number character varying(255) NOT NULL,
+    study_year integer NOT NULL,
+    confirmed boolean
+);
+
+
+ALTER TABLE student OWNER TO dbadmin;
+
+--
+-- TOC entry 191 (class 1259 OID 42673)
+-- Name: user; Type: TABLE; Schema: public; Owner: dbadmin
+--
+
+CREATE TABLE "user" (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    surname character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    password_hash character varying(128),
+    type character varying(50) NOT NULL,
+    role_id integer
+);
+
+
+ALTER TABLE "user" OWNER TO dbadmin;
+
+--
+-- TOC entry 190 (class 1259 OID 42671)
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: dbadmin
+--
+
+CREATE SEQUENCE user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE user_id_seq OWNER TO dbadmin;
+
+--
+-- TOC entry 2240 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dbadmin
+--
+
+ALTER SEQUENCE user_id_seq OWNED BY "user".id;
+
+
+--
+-- TOC entry 2050 (class 2604 OID 42656)
+-- Name: field id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY field ALTER COLUMN id SET DEFAULT nextval('field_id_seq'::regclass);
+
+
+--
+-- TOC entry 2053 (class 2604 OID 42733)
+-- Name: ownership id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY ownership ALTER COLUMN id SET DEFAULT nextval('ownership_id_seq'::regclass);
+
+
+--
+-- TOC entry 2054 (class 2604 OID 42751)
+-- Name: participation id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY participation ALTER COLUMN id SET DEFAULT nextval('participation_id_seq'::regclass);
+
+
+--
+-- TOC entry 2052 (class 2604 OID 42695)
+-- Name: question id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY question ALTER COLUMN id SET DEFAULT nextval('question_id_seq'::regclass);
+
+
+--
+-- TOC entry 2049 (class 2604 OID 42645)
+-- Name: roles id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- TOC entry 2051 (class 2604 OID 42676)
+-- Name: user id; Type: DEFAULT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regclass);
+
+
+--
+-- TOC entry 2222 (class 0 OID 42718)
+-- Dependencies: 195
+-- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO administrator (user_id, "position") VALUES (6, 'Assistent');
+INSERT INTO administrator (user_id, "position") VALUES (7, 'Professor');
+INSERT INTO administrator (user_id, "position") VALUES (8, 'Professor');
+INSERT INTO administrator (user_id, "position") VALUES (9, 'Professor');
+
+
+--
+-- TOC entry 2216 (class 0 OID 42661)
+-- Dependencies: 189
+-- Data for Name: competition; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO competition (name, date, field_id) VALUES ('Drugo takmičenje', '2018-11-01 00:00:00', 2);
+INSERT INTO competition (name, date, field_id) VALUES ('Prvo takmičenje', '2018-11-12 00:00:00', 1);
+INSERT INTO competition (name, date, field_id) VALUES ('Treće takmičenje', '2018-01-12 00:00:00', 3);
+
+
+--
+-- TOC entry 2215 (class 0 OID 42653)
+-- Dependencies: 188
+-- Data for Name: field; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO field (id, name) VALUES (1, 'Baze podataka');
+INSERT INTO field (id, name) VALUES (2, 'Operativna istraživanja');
+INSERT INTO field (id, name) VALUES (3, 'Optimizacija resursa');
+INSERT INTO field (id, name) VALUES (4, 'Paralelni računarski sistemi');
+INSERT INTO field (id, name) VALUES (5, 'Multimedijalni sistemi');
+
+
+--
+-- TOC entry 2241 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: field_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('field_id_seq', 5, true);
+
+
+--
+-- TOC entry 2224 (class 0 OID 42730)
+-- Dependencies: 197
+-- Data for Name: ownership; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO ownership (id, user_id, competition_name, competition_date) VALUES (1, 7, 'Drugo takmičenje', '2018-11-01 00:00:00');
+INSERT INTO ownership (id, user_id, competition_name, competition_date) VALUES (2, 8, 'Drugo takmičenje', '2018-11-01 00:00:00');
+INSERT INTO ownership (id, user_id, competition_name, competition_date) VALUES (3, 6, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO ownership (id, user_id, competition_name, competition_date) VALUES (5, 6, 'Drugo takmičenje', '2018-11-01 00:00:00');
+INSERT INTO ownership (id, user_id, competition_name, competition_date) VALUES (6, 6, 'Prvo takmičenje', '2018-11-12 00:00:00');
+
+
+--
+-- TOC entry 2242 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: ownership_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('ownership_id_seq', 6, true);
+
+
+--
+-- TOC entry 2226 (class 0 OID 42748)
+-- Dependencies: 199
+-- Data for Name: participation; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (1, 2, 'Prvo takmičenje', '2018-11-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (2, 2, 'Drugo takmičenje', '2018-11-01 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (3, 2, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (4, 3, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (5, 4, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (6, 5, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (7, 1, 'Treće takmičenje', '2018-01-12 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (8, 2, 'Drugo takmičenje', '2018-11-01 00:00:00');
+INSERT INTO participation (id, user_id, competition_name, competition_date) VALUES (9, 2, 'Prvo takmičenje', '2018-11-12 00:00:00');
+
+
+--
+-- TOC entry 2243 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: participation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('participation_id_seq', 9, true);
+
+
+--
+-- TOC entry 2220 (class 0 OID 42692)
+-- Dependencies: 193
+-- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+
+
+--
+-- TOC entry 2244 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('question_id_seq', 1, false);
+
+
+--
+-- TOC entry 2227 (class 0 OID 42764)
+-- Dependencies: 200
+-- Data for Name: result; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO result (participation_id, points_scored) VALUES (7, 11);
+INSERT INTO result (participation_id, points_scored) VALUES (4, 15);
+INSERT INTO result (participation_id, points_scored) VALUES (5, 9);
+INSERT INTO result (participation_id, points_scored) VALUES (6, 8);
+INSERT INTO result (participation_id, points_scored) VALUES (3, 19);
+INSERT INTO result (participation_id, points_scored) VALUES (1, 16);
+INSERT INTO result (participation_id, points_scored) VALUES (2, 12);
+
+
+--
+-- TOC entry 2213 (class 0 OID 42642)
+-- Dependencies: 186
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO roles (id, name, "default", permissions) VALUES (1, 'Administrator', false, 255);
+INSERT INTO roles (id, name, "default", permissions) VALUES (2, 'Student', false, 2);
+INSERT INTO roles (id, name, "default", permissions) VALUES (3, 'Unknown', true, 0);
+
+
+--
+-- TOC entry 2245 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('roles_id_seq', 3, true);
+
+
+--
+-- TOC entry 2221 (class 0 OID 42706)
+-- Dependencies: 194
+-- Data for Name: student; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO student (user_id, index_number, study_year, confirmed) VALUES (1, '10000', 3, true);
+INSERT INTO student (user_id, index_number, study_year, confirmed) VALUES (2, '10001', 2, true);
+INSERT INTO student (user_id, index_number, study_year, confirmed) VALUES (3, '10002', 1, true);
+INSERT INTO student (user_id, index_number, study_year, confirmed) VALUES (4, '10003', 1, true);
+INSERT INTO student (user_id, index_number, study_year, confirmed) VALUES (5, '10004', 1, true);
+
+
+--
+-- TOC entry 2218 (class 0 OID 42673)
+-- Dependencies: 191
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: dbadmin
+--
+
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (1, 'John', 'Doe', 'john.doe@gmail.com', 'pbkdf2:sha256:50000$k3e1EP14$ed70cc11267759b55226a1438e018f0de38197ca387e2715eca20d5930734ffa', 'student', 2);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (2, 'Demo', 'User', 'demo@test.com', 'pbkdf2:sha256:50000$tuxB6fkY$b4032ac793a204f99f3817ae4f66ad9105a3f2107b9c0c915805774db8941bdf', 'student', 2);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (3, 'Mary', 'Lilly', 'mary@test.com', 'pbkdf2:sha256:50000$f9GZXn4o$8235432ac4d84e138b4fea43295b406a68e76970d6ec28f5c5b5a6225fa17ffb', 'student', 2);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (4, 'Jolly', 'Foster', 'jolly@test.com', 'pbkdf2:sha256:50000$6lst4p4W$ae1b779ab975f87d3828b3cea8e17f25bca565584a134cdd8a2c86cb445242b2', 'student', 2);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (5, 'Mike', 'Young', 'mike@test.com', 'pbkdf2:sha256:50000$63ZIyF93$64a0f0eeeb39dccc01cd0069054b44fdc12b04b56b5133fcdc09bbc18db3cd78', 'student', 2);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (6, 'Some', 'Body', 'once@told.me', 'pbkdf2:sha256:50000$341ySG12$2a32dc4e69ca568dd84f31e8cb9a77c1f6d41237e0ba3a4fd1e6d9c137384146', 'administrator', 1);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (7, 'Eddy', 'Maiden', 'eddy@666.com', 'pbkdf2:sha256:50000$r6JGIxHp$ea93d89b8f8b669669e7b8a85e131ec2139b15cd06239bf095e525ed65aca217', 'administrator', 1);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (8, 'Master', 'Yoda', 'lost@you.are', 'pbkdf2:sha256:50000$WGCcQCcu$07597cf5a3fab6a349b3e8a6dc3664c669e637fac483780028fea03efccfe976', 'administrator', 1);
+INSERT INTO "user" (id, name, surname, email, password_hash, type, role_id) VALUES (9, 'Qui Gon', 'Gin', 'sw@all.ower', 'pbkdf2:sha256:50000$pJWdk1zL$8c18ae5ec3d17cd8bc8359d9cac9d18ea63080f1dd7cc3daa511d74f14a2d880', 'administrator', 1);
+
+
+--
+-- TOC entry 2246 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dbadmin
+--
+
+SELECT pg_catalog.setval('user_id_seq', 9, true);
+
+
+--
+-- TOC entry 2078 (class 2606 OID 42722)
+-- Name: administrator administrator_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY administrator
+    ADD CONSTRAINT administrator_pkey PRIMARY KEY (user_id);
+
+
+--
+-- TOC entry 2065 (class 2606 OID 42665)
+-- Name: competition competition_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY competition
+    ADD CONSTRAINT competition_pkey PRIMARY KEY (name, date);
+
+
+--
+-- TOC entry 2061 (class 2606 OID 42660)
+-- Name: field field_name_key; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY field
+    ADD CONSTRAINT field_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2063 (class 2606 OID 42658)
+-- Name: field field_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY field
+    ADD CONSTRAINT field_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2080 (class 2606 OID 42735)
+-- Name: ownership ownership_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY ownership
+    ADD CONSTRAINT ownership_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2082 (class 2606 OID 42753)
+-- Name: participation participation_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY participation
+    ADD CONSTRAINT participation_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2072 (class 2606 OID 42700)
+-- Name: question question_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT question_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2084 (class 2606 OID 42768)
+-- Name: result result_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY result
+    ADD CONSTRAINT result_pkey PRIMARY KEY (participation_id);
+
+
+--
+-- TOC entry 2057 (class 2606 OID 42649)
+-- Name: roles roles_name_key; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2059 (class 2606 OID 42647)
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2074 (class 2606 OID 42712)
+-- Name: student student_index_number_key; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY student
+    ADD CONSTRAINT student_index_number_key UNIQUE (index_number);
+
+
+--
+-- TOC entry 2076 (class 2606 OID 42710)
+-- Name: student student_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY student
+    ADD CONSTRAINT student_pkey PRIMARY KEY (user_id);
+
+
+--
+-- TOC entry 2070 (class 2606 OID 42681)
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2055 (class 1259 OID 42650)
+-- Name: ix_roles_default; Type: INDEX; Schema: public; Owner: dbadmin
+--
+
+CREATE INDEX ix_roles_default ON roles USING btree ("default");
+
+
+--
+-- TOC entry 2066 (class 1259 OID 42687)
+-- Name: ix_user_email; Type: INDEX; Schema: public; Owner: dbadmin
+--
+
+CREATE UNIQUE INDEX ix_user_email ON "user" USING btree (email);
+
+
+--
+-- TOC entry 2067 (class 1259 OID 42688)
+-- Name: ix_user_id; Type: INDEX; Schema: public; Owner: dbadmin
+--
+
+CREATE INDEX ix_user_id ON "user" USING btree (id);
+
+
+--
+-- TOC entry 2068 (class 1259 OID 42689)
+-- Name: ix_user_password_hash; Type: INDEX; Schema: public; Owner: dbadmin
+--
+
+CREATE INDEX ix_user_password_hash ON "user" USING btree (password_hash);
+
+
+--
+-- TOC entry 2089 (class 2606 OID 42723)
+-- Name: administrator administrator_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY administrator
+    ADD CONSTRAINT administrator_user_id_fkey FOREIGN KEY (user_id) REFERENCES "user"(id);
+
+
+--
+-- TOC entry 2085 (class 2606 OID 42666)
+-- Name: competition competition_field_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY competition
+    ADD CONSTRAINT competition_field_id_fkey FOREIGN KEY (field_id) REFERENCES field(id);
+
+
+--
+-- TOC entry 2090 (class 2606 OID 42736)
+-- Name: ownership ownership_competition_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY ownership
+    ADD CONSTRAINT ownership_competition_name_fkey FOREIGN KEY (competition_name, competition_date) REFERENCES competition(name, date);
+
+
+--
+-- TOC entry 2091 (class 2606 OID 42741)
+-- Name: ownership ownership_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY ownership
+    ADD CONSTRAINT ownership_user_id_fkey FOREIGN KEY (user_id) REFERENCES administrator(user_id);
+
+
+--
+-- TOC entry 2092 (class 2606 OID 42754)
+-- Name: participation participation_competition_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY participation
+    ADD CONSTRAINT participation_competition_name_fkey FOREIGN KEY (competition_name, competition_date) REFERENCES competition(name, date);
+
+
+--
+-- TOC entry 2093 (class 2606 OID 42759)
+-- Name: participation participation_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY participation
+    ADD CONSTRAINT participation_user_id_fkey FOREIGN KEY (user_id) REFERENCES student(user_id);
+
+
+--
+-- TOC entry 2087 (class 2606 OID 42701)
+-- Name: question question_competition_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT question_competition_name_fkey FOREIGN KEY (competition_name, competition_date) REFERENCES competition(name, date);
+
+
+--
+-- TOC entry 2094 (class 2606 OID 42769)
+-- Name: result result_participation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY result
+    ADD CONSTRAINT result_participation_id_fkey FOREIGN KEY (participation_id) REFERENCES participation(id);
+
+
+--
+-- TOC entry 2088 (class 2606 OID 42713)
+-- Name: student student_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY student
+    ADD CONSTRAINT student_user_id_fkey FOREIGN KEY (user_id) REFERENCES "user"(id);
+
+
+--
+-- TOC entry 2086 (class 2606 OID 42682)
+-- Name: user user_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dbadmin
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_role_id_fkey FOREIGN KEY (role_id) REFERENCES roles(id);
+
+
+-- Completed on 2018-01-13 18:12:27
+
+--
+-- PostgreSQL database dump complete
+--
+
