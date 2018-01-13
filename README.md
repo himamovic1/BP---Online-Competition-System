@@ -21,10 +21,10 @@ SETX ETF_FLASK_MAIL_MAGIC_WORD "place your email pw here"
 ```
   
  On linux OS change SETX with export.
- Depending on e-mail client, you may need to configure settings in your e-mail client
+ Depending on the e-mail client, you may need to configure some settings in your e-mail client.
  
 ### Server side:
-  - Create a dedicated virtual environment (To be explained later)
-  - Navigate to project root directory and run: ```pip install -r requirements\dev.txt" command.```
+  - Create a dedicated virtual environment (optional)
+  - Navigate to project root directory and run: ```~\ETF-COMPETITION> pip install -r requirements\dev.txt" command.```
   - Run dbinit.py script to initialize the database (this is needed only once, when running the app for the first time) ```~\ETF-COMPETITION> python dbinit.py```
   - Run application ```~\ETF-COMPETITION> python run_app.py```
